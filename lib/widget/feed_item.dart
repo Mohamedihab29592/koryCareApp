@@ -1,7 +1,8 @@
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:grocery_app/screens/productDetails.dart';
+import 'package:grocery_app/services/global_methods.dart';
 import 'package:grocery_app/widget/priceWidget.dart';
 import 'package:grocery_app/widget/textWidget.dart';
 
@@ -37,7 +38,9 @@ super.dispose();
   return  Material(
       borderRadius: BorderRadius.circular(12),
       color: Theme.of(context).cardColor,
-      child: InkWell(onTap: (){},
+      child: InkWell(onTap: (){
+        GlobalMethods.navigateTo(ctx: context, routeName: ProductDetails.routeName);
+      },
         borderRadius: BorderRadius.circular(12),
         child:Column(
           children: [
@@ -58,11 +61,11 @@ super.dispose();
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                 Flexible(flex:2, child: PriceWidget(salePrice: 2.99, price: 5.5, textPrice: _textController.text, isOnSale: true,)),
-                  SizedBox(width: 8,),
+
                   Flexible(
                     child: Row(children: [
-                      FittedBox(child: TextWidget(title: "No.", color: color, textSize: 15),),
-                      SizedBox(width: 5,),
+                      const Spacer(),
+
                       Flexible(flex:1,child: TextFormField(controller: _textController,
                       key: const ValueKey("10"),
                       style: TextStyle(color: color,fontSize: 18,
@@ -86,10 +89,10 @@ super.dispose();
                   )
               ],),
             ),
-            TextButton(onPressed: (){}, child: TextWidget(title: 'Add to Cart', color: color, textSize: 20,maxLine: 1,),
+            TextButton(onPressed: (){},
               style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Theme.of(context).cardColor),
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(borderRadius: BorderRadius.only(bottomLeft: Radius.circular(12), bottomRight: Radius.circular(12))))),
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(const RoundedRectangleBorder(borderRadius: BorderRadius.only(bottomLeft: Radius.circular(12), bottomRight: Radius.circular(12))))), child: TextWidget(title: 'Add to Cart', color: color, textSize: 20,maxLine: 1,),
             )
 
           ],

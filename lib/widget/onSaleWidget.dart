@@ -6,6 +6,8 @@ import 'package:grocery_app/widget/priceWidget.dart';
 import 'package:grocery_app/widget/textWidget.dart';
 import 'package:iconly/iconly.dart';
 
+import '../screens/productDetails.dart';
+import '../services/global_methods.dart';
 import 'heart_btn.dart';
 
 class OnSaleWidget extends StatefulWidget {
@@ -18,7 +20,6 @@ class OnSaleWidget extends StatefulWidget {
 class _OnSaleWidgetState extends State<OnSaleWidget> {
   @override
   Widget build(BuildContext context) {
-    final theme = Utils(context).getTheme;
     final Color color = Utils(context).color;
     Size size = Utils(context).screenSize;
     return Padding(
@@ -28,7 +29,10 @@ class _OnSaleWidgetState extends State<OnSaleWidget> {
         borderRadius: BorderRadius.circular(12),
         child: InkWell(
           borderRadius: BorderRadius.circular(12),
-          onTap: () {},
+          onTap: () {
+            GlobalMethods.navigateTo(ctx: context, routeName: ProductDetails.routeName);
+
+          },
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
@@ -71,7 +75,7 @@ class _OnSaleWidgetState extends State<OnSaleWidget> {
                         const SizedBox(
                           height: 10,
                         ),
-                        PriceWidget(salePrice: 2.99, price: 5.5, textPrice: '1', isOnSale: true,),
+                        const PriceWidget(salePrice: 2.99, price: 5.5, textPrice: '1', isOnSale: true,),
 
                       ],
                     ),

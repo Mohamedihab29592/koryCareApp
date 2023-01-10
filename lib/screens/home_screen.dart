@@ -19,10 +19,11 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final List<String> _offerImage = [
-    '/Users/mohamedihab/StudioProjects/grocery_app/assets/1.png',
-    '/Users/mohamedihab/StudioProjects/grocery_app/assets/2.png',
-    '/Users/mohamedihab/StudioProjects/grocery_app/assets/3.png',
-    '/Users/mohamedihab/StudioProjects/grocery_app/assets/4.png',
+    'assets/1.png',
+    'assets/2.png',
+    'assets/3.png',
+    'assets/4.png',
+
   ];
 
   @override
@@ -30,7 +31,6 @@ class _HomeScreenState extends State<HomeScreen> {
     final Utils utils = Utils(context);
     final Color color = Utils(context).color;
 
-    final themeState = utils.getTheme;
     Size size = utils.screenSize;
     return Scaffold(
       body: SingleChildScrollView(
@@ -138,7 +138,7 @@ class _HomeScreenState extends State<HomeScreen> {
               childAspectRatio: size.width / (size.height * 0.66),
               children: List.generate(
                 4,
-                (index) => FeedsWidget(),
+                (index) => const FeedsWidget(),
               ),
             ),
           ],

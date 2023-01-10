@@ -1,6 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:grocery_app/widget/onSaleWidget.dart';
+import 'package:grocery_app/widget/backWidget.dart';
 import 'package:grocery_app/widget/textWidget.dart';
 import 'package:iconly/iconly.dart';
 
@@ -9,7 +8,7 @@ import '../widget/feed_item.dart';
 
 class FeedsScreen extends StatefulWidget {
   const FeedsScreen({Key? key}) : super(key: key);
-  static const routeName = "/onSaleScreen";
+  static const routeName = "/feedsScreen";
 
   @override
   State<FeedsScreen> createState() => _FeedsScreenState();
@@ -32,7 +31,6 @@ class _FeedsScreenState extends State<FeedsScreen> {
     final Color color = Utils(context).color;
     bool _isEmpty = false;
 
-    final themeState = utils.getTheme;
     Size size = utils.screenSize;
     return Scaffold(
       appBar: AppBar(
@@ -44,15 +42,7 @@ class _FeedsScreenState extends State<FeedsScreen> {
         ),
         backgroundColor: Theme.of(context).cardColor,
         elevation: 0,
-        leading: InkWell(
-          child: Icon(
-            IconlyLight.arrow_left_2,
-            color: color,
-          ),
-          onTap: () {
-            Navigator.pop(context);
-          },
-        ),
+        leading: const BackWidget(),
       ),
       body: _isEmpty
           ? Padding(
@@ -60,7 +50,7 @@ class _FeedsScreenState extends State<FeedsScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(
+                  const Icon(
                     IconlyLight.danger,
                     size: 200,
                   ),
@@ -91,15 +81,15 @@ class _FeedsScreenState extends State<FeedsScreen> {
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
                               borderSide:
-                                  BorderSide(color: Colors.greenAccent, width: 1),
+                                  const BorderSide(color: Colors.greenAccent, width: 1),
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
                               borderSide:
-                                  BorderSide(color: Colors.greenAccent, width: 1),
+                                  const BorderSide(color: Colors.greenAccent, width: 1),
                             ),
                             hintText: "Whats is in your mind?",
-                            prefixIcon: Icon(Icons.search),
+                            prefixIcon: const Icon(Icons.search),
                             suffix: IconButton(
                                 onPressed: () {
                                   _searchController.clear();
@@ -113,14 +103,14 @@ class _FeedsScreenState extends State<FeedsScreen> {
                     ),
                   ),
                   GridView.count(
-                    physics: NeverScrollableScrollPhysics(),
+                    physics: const NeverScrollableScrollPhysics(),
                     padding: EdgeInsets.zero,
                     shrinkWrap: true,
                     crossAxisCount: 2,
                     childAspectRatio: size.width / (size.height * 0.61),
                     children: List.generate(
                       20,
-                      (index) => FeedsWidget(),
+                      (index) => const FeedsWidget(),
                     ),
                   ),
                 ],
