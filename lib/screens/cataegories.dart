@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:grocery_app/services/utilies.dart';
 import 'package:grocery_app/widget/textWidget.dart';
@@ -8,7 +7,7 @@ import '../widget/categories_widget.dart';
 class CategoriesScreen extends StatelessWidget {
    CategoriesScreen({Key? key}) : super(key: key);
 
-   List<Map<String,dynamic>> catInfo = [
+   final List<Map<String,dynamic>> catInfo = [
     {
       'imagePath' :'https://ae01.alicdn.com/kf/H0063bcac45f24f93ae91a76213d8697a9.jpg',
       'catText':'MAKEUP SET',
