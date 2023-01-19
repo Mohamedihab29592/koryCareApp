@@ -2,15 +2,23 @@ import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:grocery_app/models/cartModel.dart';
+import 'package:grocery_app/models/products_model.dart';
+import 'package:grocery_app/provider/cart_provider.dart';
+import 'package:grocery_app/provider/products_provider.dart';
 import 'package:grocery_app/widget/heart_btn.dart';
+import 'package:provider/provider.dart';
 
+import '../../provider/wishlist_provider.dart';
 import '../../services/global_methods.dart';
 import '../../services/utilies.dart';
 import '../../widget/textWidget.dart';
-import '../productDetails.dart';
+import '../innerscreens/productDetails.dart';
 
 class CartWidget extends StatefulWidget {
-  const CartWidget({Key? key}) : super(key: key);
+  const CartWidget({Key? key, required this.q, }) : super(key: key);
+  final int q;
+
 
   @override
   State<CartWidget> createState() => _CartWidgetState();
@@ -21,7 +29,7 @@ class _CartWidgetState extends State<CartWidget> {
 
   @override
   void initState() {
-    _quanController.text = "1";
+    _quanController.text = widget.q.toString();
     super.initState();
   }
 
@@ -35,11 +43,18 @@ class _CartWidgetState extends State<CartWidget> {
   Widget build(BuildContext context) {
     Size size = Utils(context).screenSize;
     Color color = Utils(context).color;
+    final productProvider = Provider.of<ProductsProvider>(context);
+    final cartModel = Provider.of<CartModel>(context);
+    final getCurrentProduct = productProvider.findById(cartModel.productId);
+    final cartProvider = Provider.of<CartProvider>(context);
+    double usedPrice = getCurrentProduct.isOnSale? getCurrentProduct.salePrice :getCurrentProduct.price ;
+    double totalPrice = usedPrice * int.parse(_quanController.text);
+    final wishlist = Provider.of<WishlistProvider>(context);
+    bool ? isWishlist = wishlist.getWishlistItem.containsKey(cartModel.productId);
 
     return GestureDetector(
       onTap: () {
-        GlobalMethods.navigateTo(
-            ctx: context, routeName: ProductDetails.routeName);
+        Navigator.pushNamed(context, ProductDetails.routeName,arguments: cartModel.productId);
       },
       child: Row(
         children: [
@@ -59,18 +74,21 @@ class _CartWidgetState extends State<CartWidget> {
                           borderRadius: BorderRadius.circular(12.0)),
                       child: FancyShimmerImage(
                         boxFit: BoxFit.fill,
-                        imageUrl:
-                            'https://ae01.alicdn.com/kf/H67784845dad144f4bf6ad5ab780fc4f5g/9Pcs-Set-Makeup-Set-Gift-Box-Cosmetic-Set-Mushroom-Air-Cushion-BB-Cream-Concealer-Powder-Velvet.jpg_480x480q90.jpg_.webp',
+                        imageUrl:getCurrentProduct.imageUrl
                       ),
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        TextWidget(
-                          title: "Title",
-                          color: color,
-                          textSize: 20,
-                          isTitle: true,
+                        SizedBox(
+                          width: size.width *0.3,
+                          child: TextWidget(
+                            title: getCurrentProduct.title,
+                            color: color,
+                            textSize: 20,
+                            isTitle: true,
+                            maxLine: 1,
+                          ),
                         ),
                         const SizedBox(
                           height: 10,
@@ -81,15 +99,17 @@ class _CartWidgetState extends State<CartWidget> {
                             children: [
                               quanityController(
                                   fun: () {
+                                    if (_quanController.text == '1') {
+                                      return;
+                                    } else {
+                                      cartProvider.reduceQuantityByone(cartModel.productId);
+                                    }
                                     setState(() {
-                                      if (_quanController.text == '1') {
-                                        return;
-                                      } else {
-                                        _quanController.text =
-                                            (int.parse(_quanController.text) -
-                                                    1)
-                                                .toString();
-                                      }
+                                      _quanController.text =
+                                          (int.parse(_quanController.text) -
+                                              1)
+                                              .toString();
+
                                     });
                                   },
                                   icon: CupertinoIcons.minus,
@@ -117,6 +137,8 @@ class _CartWidgetState extends State<CartWidget> {
                               ),
                               quanityController(
                                   fun: () {
+                                    cartProvider.increaseQuantityByone(cartModel.productId);
+
                                     setState(() {
                                       _quanController.text =
                                           (int.parse(_quanController.text) + 1)
@@ -131,30 +153,29 @@ class _CartWidgetState extends State<CartWidget> {
                       ],
                     ),
                     const Spacer(),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15),
-                      child: Column(
-                        children: [
-                          InkWell(
-                            onTap: () {},
-                            child: const Icon(
-                              CupertinoIcons.cart_badge_minus,
-                              color: Colors.red,
-                              size: 20,
-                            ),
+                    Column(
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            cartProvider.removeItem(cartModel.productId);
+                          },
+                          child: const Icon(
+                            CupertinoIcons.cart_badge_minus,
+                            color: Colors.red,
+                            size: 20,
                           ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          const HeartBTN(),
-                          TextWidget(
-                            title: '\$0.29',
-                            color: color,
-                            textSize: 18,
-                            maxLine: 1,
-                          ),
-                        ],
-                      ),
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                         HeartBTN(productId: cartModel.productId,isWishlist: isWishlist,),
+                        TextWidget(
+                          title: "\$${usedPrice.toStringAsFixed(2)}",
+                          color: color,
+                          textSize: 18,
+                          maxLine: 1,
+                        ),
+                      ],
                     ),
                     const SizedBox(
                       width: 5,

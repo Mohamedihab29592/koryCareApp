@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:grocery_app/screens/orderScreen/orderWidget.dart';
 import 'package:grocery_app/widget/backWidget.dart';
-import 'package:grocery_app/widget/emptyCart.dart';
+import 'package:grocery_app/widget/emptyScreen.dart';
 
 import '../../services/utilies.dart';
 import '../../widget/textWidget.dart';
@@ -22,7 +22,7 @@ class _OrderScreenState extends State<OrderScreen> {
     final Color color = Utils(context).color;
     bool _isEmpty = true;
 
-    return _isEmpty ? const EmptyScreen(title: 'No Orders', image: "assets/choices.png", btnTitle: 'Order Now') :Scaffold(
+    return _isEmpty ? const EmptyScreen(title: 'No Orders',subTitle: "Try to Order Some", image: "assets/choices.png", btnTitle: 'Order Now') :Scaffold(
       appBar: AppBar(leading:
         const BackWidget(),
       elevation: 0,

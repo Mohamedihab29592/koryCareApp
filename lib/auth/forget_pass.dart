@@ -14,7 +14,7 @@ class ForgetPasswordScreen extends StatefulWidget {
   const ForgetPasswordScreen({Key? key}) : super(key: key);
 
   @override
-  _ForgetPasswordScreenState createState() => _ForgetPasswordScreenState();
+  State createState() => _ForgetPasswordScreenState();
 }
 
 class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {

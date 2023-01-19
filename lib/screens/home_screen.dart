@@ -4,11 +4,14 @@ import 'package:grocery_app/services/global_methods.dart';
 import 'package:grocery_app/services/utilies.dart';
 import 'package:grocery_app/widget/textWidget.dart';
 import 'package:iconly/iconly.dart';
+import 'package:provider/provider.dart';
 
+import '../models/products_model.dart';
+import '../provider/products_provider.dart';
 import '../widget/feed_item.dart';
 import '../widget/onSaleWidget.dart';
-import 'feedsScreen.dart';
-import 'onSaleScreen.dart';
+import 'innerscreens/feedsScreen.dart';
+import 'innerscreens/onSaleScreen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -30,6 +33,10 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final Utils utils = Utils(context);
     final Color color = Utils(context).color;
+    final productProviders = Provider.of<ProductsProvider>(context);
+    List<ProductModel> allProducts = productProviders.getProducts;
+    List<ProductModel> onSaleProducts = productProviders.getOnSaleProducts;
+
 
     Size size = utils.screenSize;
     return Scaffold(
@@ -67,36 +74,43 @@ class _HomeScreenState extends State<HomeScreen> {
                 )),
             Row(
               children: [
-                RotatedBox(
-                  quarterTurns: -1,
-                  child: Row(
-                    children: [
-                      TextWidget(
-                          title: "ON SALE",
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0,right: 8),
+                  child: RotatedBox(
+                    quarterTurns: -1,
+                    child: Row(
+                      children: [
+                        TextWidget(
+                            title: "ON SALE",
+                            color: Colors.red,
+                            textSize: 22,
+                            isTitle: true),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        const Icon(
+                          IconlyLight.discount,
                           color: Colors.red,
-                          textSize: 22,
-                          isTitle: true),
-                      const SizedBox(
-                        width: 5,
-                      ),
-                      const Icon(
-                        IconlyLight.discount,
-                        color: Colors.red,
-                      )
-                    ],
+                        )
+                      ],
+                    ),
                   ),
                 ),
                 const SizedBox(
                   width: 8,
                 ),
                 Flexible(
+
                   child: SizedBox(
                     height: size.height * 0.17,
                     child: ListView.builder(
                         scrollDirection: Axis.horizontal,
-                        itemCount: 10,
+                        itemCount: onSaleProducts.length,
                         itemBuilder: (context, index) {
-                          return const OnSaleWidget();
+                          return  ChangeNotifierProvider.value(
+                            value: onSaleProducts[index],
+                            child: const OnSaleWidget(),
+                          );
                         }),
                   ),
                 ),
@@ -135,11 +149,13 @@ class _HomeScreenState extends State<HomeScreen> {
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               crossAxisCount: 2,
-              childAspectRatio: size.width / (size.height * 0.66),
-              children: List.generate(
-                4,
-                (index) => const FeedsWidget(),
-              ),
+              childAspectRatio: size.width / (size.height * 0.55),
+              children: List.generate(allProducts.length, (index)  {
+                return ChangeNotifierProvider.value(
+                  value: allProducts[index],
+                  child: const FeedsWidget(),
+                );
+              }),
             ),
           ],
         ),

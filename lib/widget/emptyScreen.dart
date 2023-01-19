@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:grocery_app/screens/feedsScreen.dart';
 import 'package:grocery_app/services/global_methods.dart';
+import 'package:grocery_app/widget/backWidget.dart';
 import 'package:grocery_app/widget/textWidget.dart';
 
+import '../screens/innerscreens/feedsScreen.dart';
 import '../services/utilies.dart';
 
 class EmptyScreen extends StatelessWidget {
-  const EmptyScreen({Key? key, required this.title, required this.image, required this.btnTitle}) : super(key: key);
-  final String title;
+  const EmptyScreen({Key? key, required this.title, required this.image, required this.btnTitle, required this.subTitle}) : super(key: key);
+  final String title,subTitle;
   final String image;
   final String btnTitle;
 
@@ -18,6 +19,8 @@ class EmptyScreen extends StatelessWidget {
     final Size size = Utils(context).screenSize;
 
     return Scaffold(
+      appBar: AppBar(          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          elevation:0,leading: const BackWidget(),),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -44,9 +47,18 @@ class EmptyScreen extends StatelessWidget {
               title: title,
               color: Colors.cyan,
               textSize: 20),
+          const SizedBox(
+            height: 20,
+          ),
+          TextWidget(
+              title: subTitle,
+              color: Colors.cyan,
+              textSize: 20),
+
           SizedBox(
             height: size.height*0.15,
           ),
+
           ElevatedButton(
             style: ElevatedButton.styleFrom(
               foregroundColor: color, backgroundColor: Theme.of(context).colorScheme.secondary, elevation: 0,

@@ -2,6 +2,7 @@
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:grocery_app/provider/dark_theme_provider.dart';
+import 'package:grocery_app/screens/innerscreens/CateogryScreen.dart';
 import 'package:grocery_app/widget/textWidget.dart';
 import 'package:provider/provider.dart';
 
@@ -16,7 +17,9 @@ class CategoriesWidget extends StatelessWidget {
     final themeState = Provider.of<DarkThemeProvider>(context);
     final color = themeState.getDarkTheme ? Colors.white: Colors.black;
     return  InkWell(
-      onTap: (){},
+      onTap: (){
+        Navigator.pushNamed(context, CategoryScreen.routeName,arguments: catText);
+      },
       child: Column(children: [
         Container(
           padding: const EdgeInsets.only(right: 8),

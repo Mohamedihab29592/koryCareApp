@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:grocery_app/widget/backWidget.dart';
 import 'package:grocery_app/widget/textWidget.dart';
 import 'package:iconly/iconly.dart';
+import 'package:provider/provider.dart';
 
-import '../services/utilies.dart';
-import '../widget/feed_item.dart';
+import '../../models/products_model.dart';
+import '../../provider/products_provider.dart';
+import '../../services/utilies.dart';
+import '../../widget/feed_item.dart';
+
 
 class FeedsScreen extends StatefulWidget {
   const FeedsScreen({Key? key}) : super(key: key);
@@ -28,8 +32,9 @@ class _FeedsScreenState extends State<FeedsScreen> {
   @override
   Widget build(BuildContext context) {
     final Utils utils = Utils(context);
-    final Color color = Utils(context).color;
-    bool _isEmpty = false;
+    final Color color = utils.color;
+    final productProviders = Provider.of<ProductsProvider>(context);
+    List<ProductModel> allProducts = productProviders.getProducts;
 
     Size size = utils.screenSize;
     return Scaffold(
@@ -44,7 +49,7 @@ class _FeedsScreenState extends State<FeedsScreen> {
         elevation: 0,
         leading: const BackWidget(),
       ),
-      body: _isEmpty
+      body: allProducts.isEmpty
           ? Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
@@ -68,7 +73,7 @@ class _FeedsScreenState extends State<FeedsScreen> {
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(18.0),
                     child: SizedBox(
                       height: kBottomNavigationBarHeight,
                       child: TextFormField(
@@ -81,23 +86,23 @@ class _FeedsScreenState extends State<FeedsScreen> {
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
                               borderSide:
-                                  const BorderSide(color: Colors.greenAccent, width: 1),
+                                  const BorderSide(color: Colors.blue, width: 1),
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
                               borderSide:
-                                  const BorderSide(color: Colors.greenAccent, width: 1),
+                                  const BorderSide(color: Colors.grey, width: 1),
                             ),
                             hintText: "Whats is in your mind?",
                             prefixIcon: const Icon(Icons.search),
-                            suffix: IconButton(
+                            suffixIcon: IconButton(
                                 onPressed: () {
                                   _searchController.clear();
                                   _searchFocusNode.unfocus();
                                 },
                                 icon: Icon(
-                                  Icons.close,size: 25,
-                                  color: _searchFocusNode.hasFocus?Colors.red:color,
+                                  _searchFocusNode.hasFocus? Icons.close:null,size: 25,
+                                  color: Colors.red,
                                 ))),
                       ),
                     ),
@@ -107,11 +112,13 @@ class _FeedsScreenState extends State<FeedsScreen> {
                     padding: EdgeInsets.zero,
                     shrinkWrap: true,
                     crossAxisCount: 2,
-                    childAspectRatio: size.width / (size.height * 0.61),
-                    children: List.generate(
-                      20,
-                      (index) => const FeedsWidget(),
-                    ),
+                    childAspectRatio: size.width / (size.height * 0.55),
+                    children: List.generate(allProducts.length, (index)  {
+                      return ChangeNotifierProvider.value(
+                      value: allProducts[index],
+                      child: const FeedsWidget(),
+                    );
+                    }),
                   ),
                 ],
               ),

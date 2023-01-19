@@ -1,16 +1,23 @@
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:grocery_app/screens/productDetails.dart';
+import 'package:grocery_app/provider/cart_provider.dart';
+import 'package:grocery_app/provider/wishlist_provider.dart';
 import 'package:grocery_app/services/global_methods.dart';
 import 'package:grocery_app/widget/priceWidget.dart';
 import 'package:grocery_app/widget/textWidget.dart';
+import 'package:iconly/iconly.dart';
+import 'package:provider/provider.dart';
 
+import '../models/products_model.dart';
+import '../screens/innerscreens/productDetails.dart';
 import '../services/utilies.dart';
 import 'heart_btn.dart';
 
 class FeedsWidget extends StatefulWidget {
-  const FeedsWidget({Key? key}) : super(key: key);
+  const FeedsWidget({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<FeedsWidget> createState() => _FeedsWidgetState();
@@ -18,86 +25,97 @@ class FeedsWidget extends StatefulWidget {
 
 class _FeedsWidgetState extends State<FeedsWidget> {
   final _textController = TextEditingController();
+
   @override
   void initState() {
-_textController.text="1";
-super.initState();
+    _textController.text = "1";
+    super.initState();
   }
+
   @override
   void dispose() {
-_textController.dispose();
-super.dispose();
+    _textController.dispose();
+    super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
+    final productModel = Provider.of<ProductModel>(context);
+    final cartProvider = Provider.of<CartProvider>(context);
+    final wishlist = Provider.of<WishlistProvider>(context);
+    bool ? isWishlist = wishlist.getWishlistItem.containsKey(productModel.id);
+    bool ? isInCart  =  cartProvider.getCartItems.containsKey(productModel.id);
 
     Size size = Utils(context).screenSize;
     Color color = Utils(context).color;
 
-
-  return  Material(
+    return Material(
       borderRadius: BorderRadius.circular(12),
       color: Theme.of(context).cardColor,
-      child: InkWell(onTap: (){
-        GlobalMethods.navigateTo(ctx: context, routeName: ProductDetails.routeName);
-      },
+      child: InkWell(
+        onTap: () {
+          Navigator.pushNamed(context, ProductDetails.routeName,arguments: productModel.id);
+          // GlobalMethods.navigateTo(
+          //     ctx: context, routeName: ProductDetails.routeName);
+        },
         borderRadius: BorderRadius.circular(12),
-        child:Column(
+        child: Column(
           children: [
             FancyShimmerImage(
               boxFit: BoxFit.fill,
-              height: size.height*0.17,
-              width: size.width*0.40,
-              imageUrl: 'https://ae01.alicdn.com/kf/H67784845dad144f4bf6ad5ab780fc4f5g/9Pcs-Set-Makeup-Set-Gift-Box-Cosmetic-Set-Mushroom-Air-Cushion-BB-Cream-Concealer-Powder-Velvet.jpg_480x480q90.jpg_.webp',),
+              height: size.height * 0.17,
+              width: size.width * 0.40,
+              imageUrl: productModel.imageUrl,
+            ),
+            const SizedBox(height: 10,),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [TextWidget(title: "title", color: color, textSize: 20,isTitle: true,),const HeartBTN()],),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                Flexible(flex:2, child: PriceWidget(salePrice: 2.99, price: 5.5, textPrice: _textController.text, isOnSale: true,)),
-
                   Flexible(
-                    child: Row(children: [
-                      const Spacer(),
+                      flex: 3,
+                      child: TextWidget(
+                        title: productModel.title,
+                        color: color,
+                        textSize: 20,
+                        isTitle: true,
+                        maxLine: 1,
+                      )),
 
-                      Flexible(flex:1,child: TextFormField(controller: _textController,
-                      key: const ValueKey("10"),
-                      style: TextStyle(color: color,fontSize: 18,
-                      ),keyboardType: TextInputType.number,
-                      minLines: 1,
-                      enabled: true,
-                      inputFormatters: [FilteringTextInputFormatter.allow(RegExp('[0-9]'))],
-                        onChanged: (value) {
-                          setState(() {
-                            if (value.isEmpty)
-                              {
-                                _textController.text= "1";
-                              }
-                            else {
-                            }
-
-                          });
-                        },
-                      ))
-                    ],),
-                  )
-              ],),
+                   Flexible(flex: 1, child: HeartBTN(productId: productModel.id,isWishlist: isWishlist,))
+                ],
+              ),
             ),
-            TextButton(onPressed: (){},
-              style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Theme.of(context).cardColor),
-                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(const RoundedRectangleBorder(borderRadius: BorderRadius.only(bottomLeft: Radius.circular(12), bottomRight: Radius.circular(12))))), child: TextWidget(title: 'Add to Cart', color: color, textSize: 20,maxLine: 1,),
-            )
-
+            Flexible(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      PriceWidget(
+                        salePrice: productModel.salePrice,
+                        price: productModel.price,
+                        textPrice: _textController.text,
+                        isOnSale: productModel.isOnSale,
+                      ),
+                      const Spacer(),
+                      GestureDetector(
+                        onTap: () {
+                          cartProvider.addProductToCart(productId: productModel.id, quantity: 1);
+                        },
+                        child:  Icon( isInCart?
+                          IconlyBold.bag_2:
+                          IconlyLight.bag_2,
+                          size: 22,
+                          color: isInCart?Colors.green:color,
+                        ),
+                      ),
+                    ],
+                  ),
+                )),
           ],
         ),
-
       ),
     );
   }

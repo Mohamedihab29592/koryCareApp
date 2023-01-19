@@ -2,9 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:grocery_app/widget/backWidget.dart';
 import 'package:grocery_app/widget/onSaleWidget.dart';
 import 'package:grocery_app/widget/textWidget.dart';
-import 'package:iconly/iconly.dart';
+import 'package:provider/provider.dart';
 
-import '../services/utilies.dart';
+import '../../models/products_model.dart';
+import '../../provider/products_provider.dart';
+import '../../services/utilies.dart';
+import '../../widget/emptyScreen.dart';
+import '../../widget/empty_products_widget.dart';
+
 
 class OnSale extends StatelessWidget {
   const OnSale({Key? key}) : super(key: key);
@@ -13,14 +18,15 @@ class OnSale extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Utils utils = Utils(context);
-    final Color color = Utils(context).color;
-    bool _isEmpty = false;
+    final Color color = utils.color;
+    final productProviders = Provider.of<ProductsProvider>(context);
+    List<ProductModel> onSaleProducts = productProviders.getOnSaleProducts;
 
     Size size = utils.screenSize;
     return Scaffold(
       appBar: AppBar(
         title: TextWidget(
-          title: "Product on Sale",
+          title: "Products on Sale",
           color: color,
           textSize: 24,
           isTitle: true,
@@ -29,34 +35,23 @@ class OnSale extends StatelessWidget {
         elevation: 0,
         leading: const BackWidget(),
       ),
-      body: _isEmpty
-          ? Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(
-                    IconlyLight.danger,
-                    size: 200,
-                  ),
-                  Text(
-                    "No Products On Sale Yet!!\n Stay tuned ",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: color,
-                        fontSize: 40,
-                        fontWeight: FontWeight.w700),
-                  ),
-                ],
-              ))
+      body: onSaleProducts.isEmpty
+          ?  const EmptyProdWidget(text: "No Products On Sale Yet!!\n Stay tuned ",)
           : GridView.count(
               padding: EdgeInsets.zero,
               shrinkWrap: true,
               crossAxisCount: 1,
               childAspectRatio: size.width / (size.height * 0.17),
               children: List.generate(
-                20,
-                (index) => const OnSaleWidget(),
+                onSaleProducts.length,
+                (index) {
+                  return ChangeNotifierProvider.value(
+                    value: onSaleProducts[index],
+                    child: const OnSaleWidget(),
+                  );
+
+
+                }
               ),
             ),
     );

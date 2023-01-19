@@ -1,13 +1,16 @@
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:grocery_app/models/cartModel.dart';
+import 'package:grocery_app/provider/cart_provider.dart';
 import 'package:grocery_app/services/utilies.dart';
 import 'package:grocery_app/widget/priceWidget.dart';
 import 'package:grocery_app/widget/textWidget.dart';
 import 'package:iconly/iconly.dart';
+import 'package:provider/provider.dart';
 
-import '../screens/productDetails.dart';
-import '../services/global_methods.dart';
+import '../models/products_model.dart';
+import '../provider/wishlist_provider.dart';
+import '../screens/innerscreens/productDetails.dart';
 import 'heart_btn.dart';
 
 class OnSaleWidget extends StatefulWidget {
@@ -20,6 +23,13 @@ class OnSaleWidget extends StatefulWidget {
 class _OnSaleWidgetState extends State<OnSaleWidget> {
   @override
   Widget build(BuildContext context) {
+    final productModel = Provider.of<ProductModel>(context);
+    final cartProvider = Provider.of<CartProvider>(context);
+    bool ? isInCart  =  cartProvider.getCartItems.containsKey(productModel.id);
+    final wishlist = Provider.of<WishlistProvider>(context);
+    bool ? isWishlist = wishlist.getWishlistItem.containsKey(productModel.id);
+
+
     final Color color = Utils(context).color;
     Size size = Utils(context).screenSize;
     return Padding(
@@ -30,7 +40,8 @@ class _OnSaleWidgetState extends State<OnSaleWidget> {
         child: InkWell(
           borderRadius: BorderRadius.circular(12),
           onTap: () {
-            GlobalMethods.navigateTo(ctx: context, routeName: ProductDetails.routeName);
+            Navigator.pushNamed(context, ProductDetails.routeName,arguments: productModel.id);
+            // GlobalMethods.navigateTo(ctx: context, routeName: ProductDetails.routeName);
 
           },
           child: Padding(
@@ -45,7 +56,8 @@ class _OnSaleWidgetState extends State<OnSaleWidget> {
                       boxFit: BoxFit.fill,
                       height: size.height*0.13,
                       width: size.width*0.26,
-                      imageUrl: 'https://ae01.alicdn.com/kf/H67784845dad144f4bf6ad5ab780fc4f5g/9Pcs-Set-Makeup-Set-Gift-Box-Cosmetic-Set-Mushroom-Air-Cushion-BB-Cream-Concealer-Powder-Velvet.jpg_480x480q90.jpg_.webp',),
+                      imageUrl: productModel.imageUrl
+                    ),
                     const SizedBox(
                       width: 10,
                     ),
@@ -53,7 +65,7 @@ class _OnSaleWidgetState extends State<OnSaleWidget> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         TextWidget(
-                          title: 'Lip Stick',
+                          title: productModel.title,
                           color: color,
                           textSize: 22,
                         ),
@@ -63,19 +75,22 @@ class _OnSaleWidgetState extends State<OnSaleWidget> {
                         Row(
                           children: [
                             GestureDetector(
-                              onTap: () {},
-                              child: Icon(
+                              onTap: () {
+                                cartProvider.addProductToCart(productId: productModel.id, quantity: 1);
+                              },
+                              child: Icon(isInCart? IconlyBold.bag_2:
                                 IconlyLight.bag_2,
                                 size: 22,
-                                color: color,
+                                color:isInCart ? Colors.green: color,
                               ),
                             ),
-                            const HeartBTN(),                          ],
+                            HeartBTN(productId: productModel.id,isWishlist: isWishlist,),                      ],
                         ),
                         const SizedBox(
                           height: 10,
                         ),
-                        const PriceWidget(salePrice: 2.99, price: 5.5, textPrice: '1', isOnSale: true,),
+                         PriceWidget(
+                          salePrice: productModel.salePrice, price: productModel.price, textPrice: '1', isOnSale: productModel.isOnSale,),
 
                       ],
                     ),

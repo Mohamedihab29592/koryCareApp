@@ -1,3 +1,4 @@
+
 class Constss {
   static final List<String> offerImages = [
     'assets/1.jpg',
@@ -12,6 +13,8 @@ class Constss {
     'assets/wishlist.png',
     'assets/grocery-cart.jpg',
     'assets/store.jpg',
-    'assets/vergtablebg.jpg',
   ];
+
+
+
 }

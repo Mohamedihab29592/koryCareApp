@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:grocery_app/screens/orderScreen/orderScreen.dart';
-import 'package:grocery_app/screens/viewedOnlyScreen/viewedScreen.dart';
+import 'package:grocery_app/screens/viewed_recently/viewed_recently.dart';
 import 'package:grocery_app/screens/wishList/wishlistScreen.dart';
 import 'package:grocery_app/services/global_methods.dart';
 import 'package:iconly/iconly.dart';
@@ -95,7 +95,7 @@ class _UserScreenState extends State<UserScreen> {
                   title: "Viewed",
                   icon: IconlyLight.show,
                   onPressed: () {
-                    GlobalMethods.navigateTo(ctx: context, routeName: ViewedScreen.routeName);
+                    GlobalMethods.navigateTo(ctx: context, routeName: ViewedRecentlyScreen.routeName);
 
                   },
                   color: color),

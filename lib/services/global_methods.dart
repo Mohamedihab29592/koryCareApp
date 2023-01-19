@@ -28,7 +28,11 @@ class GlobalMethods{
               actions: [
                 TextButton(
                   onPressed: () {
-                    Navigator.pop(context);
+                    if(Navigator.canPop(context))
+                      {
+                        Navigator.pop(context);
+                      }
+
                   },
                   child: TextWidget(
                     title: "Cancel",
@@ -39,6 +43,10 @@ class GlobalMethods{
                 TextButton(
                   onPressed: () {
                     fct();
+                    if(Navigator.canPop(context))
+                    {
+                      Navigator.pop(context);
+                    }
                   },
                   child: TextWidget(
                     title: "ok",

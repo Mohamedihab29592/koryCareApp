@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:grocery_app/provider/cart_provider.dart';
 import 'package:grocery_app/provider/dark_theme_provider.dart';
 import 'package:grocery_app/screens/cataegories.dart';
 import 'package:grocery_app/screens/home_screen.dart';
@@ -64,10 +65,14 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
           const BottomNavigationBarItem(
               icon: Icon(IconlyLight.category), label: "Category"),
           BottomNavigationBarItem(
-              icon: Badge(
+              icon: Consumer<CartProvider>(
+                builder: (_,myCart,ch) {
+                  return Badge(
              label: TextWidget(
-              title: '1', color: Colors.white, textSize: 10),
+                  title: myCart.getCartItems.length.toString(), color: Colors.white, textSize: 10),
     child: const Icon(IconlyLight.buy),
+                  );
+                }
               ),
               label: "Cart"),
           const BottomNavigationBarItem(icon: Icon(IconlyLight.user), label: "User"),
