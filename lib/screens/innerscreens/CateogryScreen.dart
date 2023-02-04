@@ -1,13 +1,12 @@
+
 import 'package:flutter/material.dart';
 import 'package:grocery_app/widget/backWidget.dart';
 import 'package:grocery_app/widget/textWidget.dart';
-import 'package:iconly/iconly.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/products_model.dart';
 import '../../provider/products_provider.dart';
 import '../../services/utilies.dart';
-import '../../widget/emptyScreen.dart';
 import '../../widget/empty_products_widget.dart';
 import '../../widget/feed_item.dart';
 
@@ -23,6 +22,8 @@ class CategoryScreen extends StatefulWidget {
 class _CategoryScreenState extends State<CategoryScreen> {
   final TextEditingController _searchController = TextEditingController();
   final FocusNode _searchFocusNode = FocusNode();
+  List<ProductModel> listProductSearch = [];
+
 
   @override
   void dispose() {
@@ -43,7 +44,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
     return Scaffold(
       appBar: AppBar(
         title: TextWidget(
-          title: "All Products",
+          title:catName,
           color: color,
           textSize: 24,
           isTitle: true,
@@ -65,7 +66,9 @@ class _CategoryScreenState extends State<CategoryScreen> {
                   focusNode: _searchFocusNode,
                   controller: _searchController,
                   onChanged: (value) {
-                    setState(() {});
+                    setState(() {
+                      listProductSearch = productProviders.searchQuery(value);
+                    });
                   },
                   decoration: InputDecoration(
                       focusedBorder: OutlineInputBorder(
@@ -92,15 +95,21 @@ class _CategoryScreenState extends State<CategoryScreen> {
                 ),
               ),
             ),
+            _searchController.text.isNotEmpty && listProductSearch.isEmpty? const  EmptyProdWidget(text: 'No Products belong to this category',) :
             GridView.count(
               physics: const NeverScrollableScrollPhysics(),
               padding: EdgeInsets.zero,
               shrinkWrap: true,
               crossAxisCount: 2,
               childAspectRatio: size.width / (size.height * 0.55),
-              children: List.generate(ProductByCat.length, (index)  {
+              children: List.generate(
+                _searchController.text.isNotEmpty ? listProductSearch.length:
+
+
+                  ProductByCat.length, (index)  {
                 return ChangeNotifierProvider.value(
-                  value: ProductByCat[index],
+                  value: _searchController.text.isNotEmpty ? listProductSearch[index]:
+                  ProductByCat[index],
                   child: const FeedsWidget(),
                 );
               }),

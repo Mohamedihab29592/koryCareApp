@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:grocery_app/provider/cart_provider.dart';
+import 'package:grocery_app/provider/products_provider.dart';
 import 'package:grocery_app/screens/cart/cartWidget.dart';
 import 'package:grocery_app/widget/emptyScreen.dart';
 import 'package:grocery_app/services/global_methods.dart';
@@ -53,7 +54,7 @@ class CartScreen extends StatelessWidget {
             ),
             body: Column(
               children: [
-                _checkOut(size: size, color: color),
+                _checkOut(size: size, color: color, context: context),
                 Expanded(
                     child: ListView.builder(
                         itemCount: cartList.length,
@@ -64,7 +65,14 @@ class CartScreen extends StatelessWidget {
             ));
   }
 
-  Widget _checkOut({required Size size, required Color color}) {
+  Widget _checkOut({required Size size, required Color color,required BuildContext context}) {
+    final cartProvider = Provider.of<CartProvider>(context);
+    final productProvider = Provider.of<ProductsProvider>(context);
+    double total =0;
+    cartProvider.getCartItems.forEach((key, value){
+    final getCurrentProduct = productProvider.findById(value.productId);
+   total += (getCurrentProduct.isOnSale? getCurrentProduct.salePrice:getCurrentProduct.price)* value.quantity;
+   });
     return SizedBox(
       height: size.height * 0.1,
       width: double.infinity,
@@ -90,7 +98,7 @@ class CartScreen extends StatelessWidget {
             ),
             const Spacer(),
             TextWidget(
-              title: "Total \$0.259",
+              title: total.toStringAsFixed(2),
               color: color,
               textSize: 18,
               isTitle: true,

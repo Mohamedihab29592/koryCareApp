@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "583527128111",
+    "project_id": "kory-care",
+    "storage_bucket": "kory-care.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:583527128111:android:d5c1d4985b9d1dbf32bada",
+        "android_client_info": {
+          "package_name": "com.example.grocery_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "583527128111-gcb0634a3co1p1vh027fna2856oka94d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyChy1LwrL26Dxfmaol8DBBItgcjiy0bn7k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "583527128111-gcb0634a3co1p1vh027fna2856oka94d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

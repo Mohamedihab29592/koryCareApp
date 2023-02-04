@@ -156,8 +156,8 @@ class _CartWidgetState extends State<CartWidget> {
                     Column(
                       children: [
                         InkWell(
-                          onTap: () {
-                            cartProvider.removeItem(cartModel.productId);
+                          onTap: () async{
+                           await cartProvider.removeItem(productId: cartModel.productId,cartId: cartModel.id,quantity: cartModel.quantity);
                           },
                           child: const Icon(
                             CupertinoIcons.cart_badge_minus,
@@ -170,7 +170,7 @@ class _CartWidgetState extends State<CartWidget> {
                         ),
                          HeartBTN(productId: cartModel.productId,isWishlist: isWishlist,),
                         TextWidget(
-                          title: "\$${usedPrice.toStringAsFixed(2)}",
+                          title: "\$${(usedPrice * int.parse(_quanController.text)) .toStringAsFixed(2)}",
                           color: color,
                           textSize: 18,
                           maxLine: 1,

@@ -58,4 +58,38 @@ class GlobalMethods{
         });
   }
 
+
+  static   Future<void> errorDialog({
+
+    required String subTitle,
+    required BuildContext context,
+
+
+
+  }) async {
+    await showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+              title:  const Text('Something Went Wrong'),
+              content:  Text(subTitle),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    if(Navigator.canPop(context))
+                    {
+                      Navigator.pop(context);
+                    }
+
+                  },
+                  child: TextWidget(
+                    title: "ok",
+                    color: Colors.cyan,
+                    textSize: 20,
+                  ),
+                ),
+              ]);
+        });
+  }
+
 }

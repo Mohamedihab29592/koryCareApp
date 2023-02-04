@@ -1,4 +1,6 @@
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
+
 import 'package:grocery_app/provider/cart_provider.dart';
 import 'package:grocery_app/provider/dark_theme_provider.dart';
 import 'package:grocery_app/screens/cataegories.dart';
@@ -68,7 +70,7 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
               icon: Consumer<CartProvider>(
                 builder: (_,myCart,ch) {
                   return Badge(
-             label: TextWidget(
+             badgeContent: TextWidget(
                   title: myCart.getCartItems.length.toString(), color: Colors.white, textSize: 10),
     child: const Icon(IconlyLight.buy),
                   );

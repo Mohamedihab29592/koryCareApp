@@ -34,7 +34,7 @@ class PriceWidget extends StatelessWidget {
               child: Text(
                 "\$${(price * int.parse(textPrice)).toStringAsFixed(2)}",
                 style: TextStyle(
-                    fontSize: 18,
+                    fontSize: 16,
                     color: color,
                     decoration: TextDecoration.lineThrough),
               ))

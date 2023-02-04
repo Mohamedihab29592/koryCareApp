@@ -11,21 +11,28 @@ final String text;
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(18.0),
-              child: Image.asset(
-                'assets/images/box.png',
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(18.0),
+                child: Image.asset(
+
+                  'assets/analysis.png',
+                  height: 250,
+                  width: double.infinity,
+                ),
               ),
-            ),
-            Text(
-              text,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  color: color, fontSize: 30, fontWeight: FontWeight.w700),
-            ),
-          ],
+              SizedBox(height: 100,),
+              Text(
+                text,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: color, fontSize: 30, fontWeight: FontWeight.w700),
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -1,28 +1,70 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../models/products_model.dart';
 
 class ProductsProvider with ChangeNotifier {
   List<ProductModel> get getProducts {
-    return productsList;
+    return _productsList;
   }
 
 
   List<ProductModel> get getOnSaleProducts {
-    return productsList.where((element) => element.isOnSale).toList();
+    return _productsList.where((element) => element.isOnSale).toList();
   }
 
   ProductModel findById(String id)
   {
-    return productsList.firstWhere((element) => element.id == id);
+    return _productsList.firstWhere((element) => element.id == id);
   }
 
   List<ProductModel> findByCategory(String categoryName){
-    List<ProductModel> categoryList = productsList.where((element) => element.productCategoryName.toLowerCase().contains(categoryName.toLowerCase())).toList();
+    List<ProductModel> categoryList = _productsList.where((element) => element.productCategoryName.toLowerCase().contains(categoryName.toLowerCase())).toList();
     return categoryList;
   }
 
-  static final List<ProductModel> productsList = [
+  static final List<ProductModel> _productsList = [];
+
+  Future<void> fetchProducts() async {
+
+    await FirebaseFirestore.instance
+        .collection('products')
+        .get()
+        .then((QuerySnapshot productSnapshot) {
+          _productsList.clear();
+      for (var element in productSnapshot.docs) {
+        _productsList.insert(
+            0,
+            ProductModel(
+              id: element.get('id'),
+              title: element.get('title'),
+              imageUrl: element.get('imageUrl'),
+              productCategoryName: element.get('productCategoryName'),
+              price: double.parse(
+                element.get('price'),
+              ),
+              salePrice: element.get('sale_price'),
+              isOnSale: element.get('isOnSale'),
+            ));
+      }
+    });
+    notifyListeners();
+  }
+
+  List<ProductModel> searchQuery(String searchText) {
+    List<ProductModel> _searchList = _productsList
+        .where(
+          (element) => element.title.toLowerCase().contains(
+        searchText.toLowerCase(),
+      ),
+    )
+        .toList();
+    return _searchList;
+  }
+
+}
+
+/* static final List<ProductModel> productsList = [
     ProductModel(
       id: '1',
       title: 'Cream Foot Care',
@@ -123,7 +165,7 @@ class ProductsProvider with ChangeNotifier {
       productCategoryName: 'skin care',
       isOnSale: false,
     ),
-    /* ProductModel(
+    *//* ProductModel(
       id: 'Plantain-flower',
       title: 'Plantain-flower',
       price: 0.99,
@@ -284,6 +326,6 @@ class ProductsProvider with ChangeNotifier {
       productCategoryName: 'Nuts',
       isOnSale: true,
       isPiece: false,
-    ),*/
-  ];
-}
+    ),*//*
+  ];*/
+

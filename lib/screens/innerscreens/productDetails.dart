@@ -1,4 +1,5 @@
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,8 +10,10 @@ import 'package:grocery_app/widget/textWidget.dart';
 import 'package:iconly/iconly.dart';
 import 'package:provider/provider.dart';
 
+import '../../consts/firebase.dart';
 import '../../provider/products_provider.dart';
 import '../../provider/wishlist_provider.dart';
+import '../../services/global_methods.dart';
 import '../../services/utilies.dart';
 
 class ProductDetails extends StatefulWidget {
@@ -261,8 +264,14 @@ class _ProductDetailsState extends State<ProductDetails> {
                               borderRadius: BorderRadius.circular(10),
                               child: InkWell(
                                   onTap: isInCart?null:() {
-                                    cartProvider.addProductToCart(productId: getCurrentProduct.id, quantity: int.parse(_quantityController.text));
-
+                                    final User? user = auth.currentUser;
+                                    if(user ==null)
+                                    {
+                                      GlobalMethods.errorDialog(subTitle: "Please Register First", context: context);
+                                      return;
+                                    }
+                                    cartProvider.addProductToCart(productId: getCurrentProduct.id, quantity: int.parse(_quantityController.text), context: context);
+                                   cartProvider.fetchCart();
                                   },
                                   borderRadius: BorderRadius.circular(10),
                                   child: Padding(

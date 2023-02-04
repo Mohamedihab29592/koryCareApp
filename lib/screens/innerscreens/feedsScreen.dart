@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import '../../models/products_model.dart';
 import '../../provider/products_provider.dart';
 import '../../services/utilies.dart';
+import '../../widget/empty_products_widget.dart';
 import '../../widget/feed_item.dart';
 
 
@@ -21,6 +22,8 @@ class FeedsScreen extends StatefulWidget {
 class _FeedsScreenState extends State<FeedsScreen> {
   final TextEditingController _searchController = TextEditingController();
   final FocusNode _searchFocusNode = FocusNode();
+  List<ProductModel> listProductSearch = [];
+
 
   @override
   void dispose() {
@@ -80,7 +83,10 @@ class _FeedsScreenState extends State<FeedsScreen> {
                         focusNode: _searchFocusNode,
                         controller: _searchController,
                         onChanged: (value) {
-                          setState(() {});
+                          setState(() {
+                            listProductSearch = productProviders.searchQuery(value);
+
+                          });
                         },
                         decoration: InputDecoration(
                             focusedBorder: OutlineInputBorder(
@@ -107,15 +113,22 @@ class _FeedsScreenState extends State<FeedsScreen> {
                       ),
                     ),
                   ),
+                  _searchController.text.isNotEmpty && listProductSearch.isEmpty? const  EmptyProdWidget(text: 'No Products belong to this category',) :
                   GridView.count(
                     physics: const NeverScrollableScrollPhysics(),
                     padding: EdgeInsets.zero,
                     shrinkWrap: true,
                     crossAxisCount: 2,
                     childAspectRatio: size.width / (size.height * 0.55),
-                    children: List.generate(allProducts.length, (index)  {
+                    children: List.generate(
+                        _searchController.text.isNotEmpty ? listProductSearch.length:
+
+
+                        allProducts.length, (index)  {
                       return ChangeNotifierProvider.value(
-                      value: allProducts[index],
+                      value: _searchController.text.isNotEmpty ? listProductSearch[index]:
+
+                      allProducts[index],
                       child: const FeedsWidget(),
                     );
                     }),

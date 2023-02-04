@@ -1,4 +1,5 @@
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:grocery_app/provider/cart_provider.dart';
@@ -9,6 +10,7 @@ import 'package:grocery_app/widget/textWidget.dart';
 import 'package:iconly/iconly.dart';
 import 'package:provider/provider.dart';
 
+import '../consts/firebase.dart';
 import '../models/products_model.dart';
 import '../screens/innerscreens/productDetails.dart';
 import '../services/utilies.dart';
@@ -102,7 +104,14 @@ class _FeedsWidgetState extends State<FeedsWidget> {
                       const Spacer(),
                       GestureDetector(
                         onTap: () {
-                          cartProvider.addProductToCart(productId: productModel.id, quantity: 1);
+                          final User? user = auth.currentUser;
+                          if(user ==null)
+                          {
+                            GlobalMethods.errorDialog(subTitle: "Please Register First", context: context);
+                            return;
+                          }
+                          cartProvider.addProductToCart(productId: productModel.id, quantity: 1,context: context);
+                          cartProvider.fetchCart();
                         },
                         child:  Icon( isInCart?
                           IconlyBold.bag_2:

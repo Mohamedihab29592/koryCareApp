@@ -87,9 +87,11 @@ class _ViewedRecentlyWidgetState extends State<ViewedRecentlyWidget> {
                         ? null
                         : () {
                             cartProvider.addProductToCart(
+                              context: context,
                               productId: getCurrProduct.id,
                               quantity: 1,
                             );
+                            cartProvider.fetchCart();
                           },
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
