@@ -47,11 +47,12 @@ class _LoginScreenState extends State<LoginScreen> {
   void _submitFormOnLogin() async {
     final isValid = _formKey.currentState!.validate();
     FocusScope.of(context).unfocus();
-    setState(() {
-      _isLoading = true;
-    });
+
     if (isValid) {
       _formKey.currentState!.save();
+      setState(() {
+        _isLoading = true;
+      });
 
       try{
         await  auth.signInWithEmailAndPassword(email: _emailTextController.text.toLowerCase().trim(), password: _passTextController.text.trim());

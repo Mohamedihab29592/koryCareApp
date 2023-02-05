@@ -263,7 +263,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                               color: Colors.green,
                               borderRadius: BorderRadius.circular(10),
                               child: InkWell(
-                                  onTap: isInCart?null:() {
+                                  onTap: isInCart?null:() async{
                                     final User? user = auth.currentUser;
                                     if(user ==null)
                                     {
@@ -271,7 +271,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                       return;
                                     }
                                     cartProvider.addProductToCart(productId: getCurrentProduct.id, quantity: int.parse(_quantityController.text), context: context);
-                                   cartProvider.fetchCart();
+                                   await cartProvider.fetchCart();
                                   },
                                   borderRadius: BorderRadius.circular(10),
                                   child: Padding(

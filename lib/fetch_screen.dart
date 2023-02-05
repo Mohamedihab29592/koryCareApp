@@ -4,9 +4,11 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:grocery_app/consts/firebase.dart';
 import 'package:grocery_app/provider/cart_provider.dart';
 import 'package:grocery_app/provider/products_provider.dart';
+import 'package:grocery_app/provider/wishlist_provider.dart';
 import 'package:grocery_app/screens/bottom_bar.dart';
 import 'package:provider/provider.dart';
 
+import 'auth/login.dart';
 import 'consts/contss.dart';
 
 
@@ -30,19 +32,25 @@ class _FetchScreenState extends State<FetchScreen> {
           Provider.of<ProductsProvider>(context, listen: false);
       final cartProvider =
       Provider.of<CartProvider>(context, listen: false);
+      final wishProvider =
+      Provider.of<WishlistProvider>(context, listen: false);
       if(user == null )
         {
           await productsProvider.fetchProducts();
-          cartProvider.clear();
+           await cartProvider.clear();
+         await   wishProvider.clear();
+
 
         }
       else
         {
           await productsProvider.fetchProducts();
-
           await cartProvider.fetchCart();
+          await wishProvider.fetchWish();
 
         }
+
+
       Navigator.of(context).pushReplacement(MaterialPageRoute(
         builder: (ctx) => const BottomBarScreen(),
       ));

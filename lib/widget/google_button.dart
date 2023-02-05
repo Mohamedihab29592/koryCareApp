@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -18,12 +19,25 @@ Future<void> _googleSignIn(context)async {
    if(googleAuth.accessToken != null && googleAuth.idToken !=null)
      {
        try{
-         await auth.signInWithCredential(GoogleAuthProvider.credential(idToken: googleAuth.idToken,
+       final AuthResult =   await auth.signInWithCredential(GoogleAuthProvider.credential(idToken: googleAuth.idToken,
          accessToken: googleAuth.accessToken));
+         if(AuthResult.additionalUserInfo!.isNewUser){
+           await FirebaseFirestore.instance.collection('users').doc(AuthResult.user!.uid).set({
+             'id':AuthResult.user!.uid,
+             'name':AuthResult.user!.displayName,
+             'email':AuthResult.user!.email,
+             'shipping_address': '',
+             'userWish': [],
+             'userCart':[],
+             'createAt':Timestamp.now(),
+
+
+           });
+         }
          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>const FetchScreen(),));
 
        }on FirebaseException catch(error)
-       {;
+       {
          GlobalMethods.errorDialog(subTitle: "${error.message}", context: context);
 
        }catch (error)

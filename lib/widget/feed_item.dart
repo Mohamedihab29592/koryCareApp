@@ -12,12 +12,14 @@ import 'package:provider/provider.dart';
 
 import '../consts/firebase.dart';
 import '../models/products_model.dart';
+import '../provider/products_provider.dart';
 import '../screens/innerscreens/productDetails.dart';
 import '../services/utilies.dart';
 import 'heart_btn.dart';
+import 'load.dart';
 
 class FeedsWidget extends StatefulWidget {
-  const FeedsWidget({
+   const FeedsWidget({
     Key? key,
   }) : super(key: key);
 
@@ -39,6 +41,7 @@ class _FeedsWidgetState extends State<FeedsWidget> {
     _textController.dispose();
     super.dispose();
   }
+  bool isloading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +50,8 @@ class _FeedsWidgetState extends State<FeedsWidget> {
     final wishlist = Provider.of<WishlistProvider>(context);
     bool ? isWishlist = wishlist.getWishlistItem.containsKey(productModel.id);
     bool ? isInCart  =  cartProvider.getCartItems.containsKey(productModel.id);
+    final productProvider =Provider.of<ProductsProvider>(context);
+    final getCurrentProduct =productProvider.findById(productModel.id);
 
     Size size = Utils(context).screenSize;
     Color color = Utils(context).color;
@@ -103,17 +108,35 @@ class _FeedsWidgetState extends State<FeedsWidget> {
                       ),
                       const Spacer(),
                       GestureDetector(
-                        onTap: () {
-                          final User? user = auth.currentUser;
-                          if(user ==null)
-                          {
-                            GlobalMethods.errorDialog(subTitle: "Please Register First", context: context);
-                            return;
+                        onTap:isInCart?null: () async{
+                          setState(() {
+                            isloading = true;
+
+                          });
+                          try {
+
+                            final User? user = auth.currentUser;
+                            if(user ==null)
+                            {
+                              GlobalMethods.errorDialog(subTitle: "Please Register First", context: context);
+                              return;
+                            }
+                            cartProvider.addProductToCart(productId: productModel.id, quantity: 1,context: context);
+
+                            await cartProvider.fetchCart();
+                            setState(() {
+                              isloading = false;
+                            });
+                          }catch(error){
+                            GlobalMethods.errorDialog(subTitle: error.toString(), context: context);
+                          }finally{
+                            setState(() {
+                              isloading = false;
+                            });
                           }
-                          cartProvider.addProductToCart(productId: productModel.id, quantity: 1,context: context);
-                          cartProvider.fetchCart();
                         },
-                        child:  Icon( isInCart?
+                        child:isloading ? const Loading():
+                      Icon( isInCart?
                           IconlyBold.bag_2:
                           IconlyLight.bag_2,
                           size: 22,

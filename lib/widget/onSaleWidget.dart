@@ -15,6 +15,7 @@ import '../provider/wishlist_provider.dart';
 import '../screens/innerscreens/productDetails.dart';
 import '../services/global_methods.dart';
 import 'heart_btn.dart';
+import 'load.dart';
 
 class OnSaleWidget extends StatefulWidget {
   const OnSaleWidget({Key? key}) : super(key: key);
@@ -24,6 +25,8 @@ class OnSaleWidget extends StatefulWidget {
 }
 
 class _OnSaleWidgetState extends State<OnSaleWidget> {
+  bool isloading = false;
+
   @override
   Widget build(BuildContext context) {
     final productModel = Provider.of<ProductModel>(context);
@@ -78,17 +81,34 @@ class _OnSaleWidgetState extends State<OnSaleWidget> {
                         Row(
                           children: [
                             GestureDetector(
-                              onTap: () {
-                                final User? user = auth.currentUser;
-                                if(user ==null)
-                                {
-                                  GlobalMethods.errorDialog(subTitle: "Please Register First", context: context);
-                                  return;
+                              onTap:isInCart?null: () async{
+                                setState(() {
+                                  isloading = true;
+
+                                });
+                                try {
+
+                                  final User? user = auth.currentUser;
+                                  if(user ==null)
+                                  {
+                                    GlobalMethods.errorDialog(subTitle: "Please Register First", context: context);
+                                    return;
+                                  }
+                                  cartProvider.addProductToCart(productId: productModel.id, quantity: 1,context: context);
+
+                                  await cartProvider.fetchCart();
+                                  setState(() {
+                                    isloading = false;
+                                  });
+                                }catch(error){
+                                  GlobalMethods.errorDialog(subTitle: error.toString(), context: context);
+                                }finally{
+                                  setState(() {
+                                    isloading = false;
+                                  });
                                 }
-                                cartProvider.addProductToCart(productId: productModel.id, quantity: 1,context: context);
-                                cartProvider.fetchCart();
                               },
-                              child: Icon(isInCart? IconlyBold.bag_2:
+                              child: isloading? const Loading():Icon(isInCart? IconlyBold.bag_2:
                                 IconlyLight.bag_2,
                                 size: 22,
                                 color:isInCart ? Colors.green: color,

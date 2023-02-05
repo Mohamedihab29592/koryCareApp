@@ -43,13 +43,9 @@ class CartProvider with ChangeNotifier {
 
   Future<void> fetchCart() async {
     final User? user = auth.currentUser;
-
-
     final DocumentSnapshot userDoc =
     await userCollection.doc(user!.uid).get();
-    if (userDoc == null) {
-      return;
-    }
+
     final leng = userDoc.get('userCart').length;
     for (int i = 0; i < leng; i++) {
       _cartItems.putIfAbsent(
@@ -103,11 +99,16 @@ class CartProvider with ChangeNotifier {
   async {
     final User? user = auth.currentUser;
 
-    await userCollection.doc(user!.uid).update({
-      'userCart':[],
-    });
+   if(user != null)
+     {
+       await userCollection.doc(user!.uid).update({
+         'userCart':[],
+       });
+     }
 
     _cartItems.clear();
     notifyListeners();
   }
+
+
 }

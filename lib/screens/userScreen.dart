@@ -10,7 +10,10 @@ import 'package:iconly/iconly.dart';
 import 'package:provider/provider.dart';
 
 import '../auth/forget_pass.dart';
+import '../provider/cart_provider.dart';
 import '../provider/dark_theme_provider.dart';
+import '../provider/products_provider.dart';
+import '../provider/wishlist_provider.dart';
 import '../widget/loading_manager.dart';
 import '../widget/textWidget.dart';
 import 'orderScreen/orderScreen.dart';
@@ -33,6 +36,7 @@ class _UserScreenState extends State<UserScreen> {
   String ? _name ;
   String ? _address ;
   final User? user = auth.currentUser;
+
 
   @override
   void initState() {
@@ -77,6 +81,12 @@ class _UserScreenState extends State<UserScreen> {
 
     final themeState = Provider.of<DarkThemeProvider>(context);
     final Color color = themeState.getDarkTheme ? Colors.white : Colors.black;
+    final productsProvider =
+    Provider.of<ProductsProvider>(context, listen: false);
+    final cartProvider =
+    Provider.of<CartProvider>(context, listen: false);
+    final wishProvider =
+    Provider.of<WishlistProvider>(context, listen: false);
 
     return Scaffold(
         body: LoadingManager(
@@ -184,7 +194,11 @@ class _UserScreenState extends State<UserScreen> {
                           return ;
                         }
                       await GlobalMethods.warningDialog(title: 'SignOut', subTitle: "Do you Want to SignOut?", fct: ()async{
+                        await productsProvider.fetchProducts();
+                        await cartProvider.clear();
+                        await   wishProvider.clear();
                        await auth.signOut();
+
                        Navigator.of(context).push(MaterialPageRoute(builder: (context)=>const LoginScreen()));
 
                       }, context: context);
