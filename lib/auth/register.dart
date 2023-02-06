@@ -65,6 +65,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
         await  auth.createUserWithEmailAndPassword(email: _emailTextController.text.toLowerCase().trim(), password: _passTextController.text.trim());
        final User? user = auth.currentUser;
        final _uid = user!.uid;
+       user.updateDisplayName(_fullNameController.text);
+      await  user.reload();
        await FirebaseFirestore.instance.collection('users').doc(_uid).set({
          'id':_uid,
          'name':_fullNameController.text,

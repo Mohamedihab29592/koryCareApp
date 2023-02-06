@@ -9,6 +9,7 @@ import 'package:grocery_app/provider/products_provider.dart';
 import 'package:grocery_app/widget/heart_btn.dart';
 import 'package:provider/provider.dart';
 
+import '../../provider/orderProvider.dart';
 import '../../provider/wishlist_provider.dart';
 import '../../services/global_methods.dart';
 import '../../services/utilies.dart';
@@ -48,6 +49,8 @@ class _CartWidgetState extends State<CartWidget> {
     final getCurrentProduct = productProvider.findById(cartModel.productId);
     final cartProvider = Provider.of<CartProvider>(context);
     double usedPrice = getCurrentProduct.isOnSale? getCurrentProduct.salePrice :getCurrentProduct.price ;
+    final orderProvier = Provider.of<OrderProvider>(context);
+
     double totalPrice = usedPrice * int.parse(_quanController.text);
     final wishlist = Provider.of<WishlistProvider>(context);
     bool ? isWishlist = wishlist.getWishlistItem.containsKey(cartModel.productId);
@@ -174,6 +177,28 @@ class _CartWidgetState extends State<CartWidget> {
                           color: color,
                           textSize: 18,
                           maxLine: 1,
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+
+                        Material(
+                          color: Colors.green,
+                          borderRadius: BorderRadius.circular(10),
+                          child: InkWell(
+                            borderRadius: BorderRadius.circular(10),
+                            onTap: () async{
+                              await orderProvier.addProductToOrder(total: totalPrice, cartProvider: cartProvider, productProvider: productProvider, context: context, quantity:cartModel.quantity , productId:cartModel.productId);
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: TextWidget(
+                                title: 'Order Now',
+                                color: Colors.white,
+                                textSize: 14,
+                              ),
+                            ),
+                          ),
                         ),
                       ],
                     ),

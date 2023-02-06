@@ -83,7 +83,7 @@ class WishlistProvider with ChangeNotifier {
 
     if(user != null)
       {
-        await userCollection.doc(user!.uid).update({
+        await userCollection.doc(user.uid).update({
           'userWish':[],
         });
       }

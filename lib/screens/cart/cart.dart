@@ -1,5 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:grocery_app/provider/cart_provider.dart';
+import 'package:grocery_app/provider/orderProvider.dart';
 import 'package:grocery_app/provider/products_provider.dart';
 import 'package:grocery_app/screens/cart/cartWidget.dart';
 import 'package:grocery_app/widget/emptyScreen.dart';
@@ -8,6 +12,9 @@ import 'package:grocery_app/services/utilies.dart';
 import 'package:grocery_app/widget/textWidget.dart';
 import 'package:iconly/iconly.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
+
+import '../../consts/firebase.dart';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({Key? key}) : super(key: key);
@@ -66,8 +73,9 @@ class CartScreen extends StatelessWidget {
   }
 
   Widget _checkOut({required Size size, required Color color,required BuildContext context}) {
-    final cartProvider = Provider.of<CartProvider>(context);
+    final cartProvider = Provider.of<CartProvider>(context,);
     final productProvider = Provider.of<ProductsProvider>(context);
+    final orderProvier = Provider.of<OrderProvider>(context);
     double total =0;
     cartProvider.getCartItems.forEach((key, value){
     final getCurrentProduct = productProvider.findById(value.productId);
@@ -80,25 +88,10 @@ class CartScreen extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: Row(
           children: [
-            Material(
-              color: Colors.green,
-              borderRadius: BorderRadius.circular(10),
-              child: InkWell(
-                borderRadius: BorderRadius.circular(10),
-                onTap: () {},
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextWidget(
-                    title: 'Order Now',
-                    color: Colors.white,
-                    textSize: 20,
-                  ),
-                ),
-              ),
-            ),
+
             const Spacer(),
             TextWidget(
-              title: total.toStringAsFixed(2),
+              title: 'Total ${total.toStringAsFixed(2)}',
               color: color,
               textSize: 18,
               isTitle: true,

@@ -9,6 +9,7 @@ class ProductsProvider with ChangeNotifier {
   }
 
 
+
   List<ProductModel> get getOnSaleProducts {
     return _productsList.where((element) => element.isOnSale).toList();
   }
