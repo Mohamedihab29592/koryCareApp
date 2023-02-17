@@ -9,7 +9,7 @@ import '../consts/firebase.dart';
 import '../services/global_methods.dart';
 
 class WishlistProvider with ChangeNotifier {
-  Map<String, WishlistModel> _wishlistItems = {};
+  final Map<String, WishlistModel> _wishlistItems = {};
   final userCollection = FirebaseFirestore.instance.collection('users');
 
 

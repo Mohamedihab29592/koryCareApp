@@ -64,7 +64,6 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
       setState(() {
         _isLoading = false;
       });
-      print(error.toString());
 
 
     }finally{

@@ -13,7 +13,7 @@ class CategoriesWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    double _screenWidth = MediaQuery.of(context).size.width;
+    double screenWidth = MediaQuery.of(context).size.width;
     final themeState = Provider.of<DarkThemeProvider>(context);
     final color = themeState.getDarkTheme ? Colors.white: Colors.black;
     return  InkWell(
@@ -27,7 +27,7 @@ class CategoriesWidget extends StatelessWidget {
             borderRadius:
             const BorderRadius.all(Radius.circular(8)),
             child: FancyShimmerImage(
-              height: _screenWidth*0.8,
+              height: screenWidth*0.8,
               imageUrl: imagePath,
             ),
           ),

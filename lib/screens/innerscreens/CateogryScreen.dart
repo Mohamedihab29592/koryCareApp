@@ -38,7 +38,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
     final Color color = utils.color;
     final productProviders = Provider.of<ProductsProvider>(context);
     final catName= ModalRoute.of(context)!.settings.arguments as String;
-    List<ProductModel> ProductByCat = productProviders.findByCategory(catName);
+    List<ProductModel> productByCat = productProviders.findByCategory(catName);
 
     Size size = utils.screenSize;
     return Scaffold(
@@ -53,7 +53,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
         elevation: 0,
         leading: const BackWidget(),
       ),
-      body: ProductByCat.isEmpty
+      body: productByCat.isEmpty
           ?   const EmptyProdWidget(text: 'No Products belong to this category',)
           : SingleChildScrollView(
         child: Column(
@@ -106,10 +106,10 @@ class _CategoryScreenState extends State<CategoryScreen> {
                 _searchController.text.isNotEmpty ? listProductSearch.length:
 
 
-                  ProductByCat.length, (index)  {
+                productByCat.length, (index)  {
                 return ChangeNotifierProvider.value(
                   value: _searchController.text.isNotEmpty ? listProductSearch[index]:
-                  ProductByCat[index],
+                  productByCat[index],
                   child: const FeedsWidget(),
                 );
               }),

@@ -7,7 +7,6 @@ import 'package:grocery_app/provider/orderProvider.dart';
 import 'package:grocery_app/provider/products_provider.dart';
 import 'package:grocery_app/provider/viewed_prod_provider.dart';
 import 'package:grocery_app/provider/wishlist_provider.dart';
-import 'package:grocery_app/screens/bottom_bar.dart';
 import 'package:grocery_app/screens/innerscreens/CateogryScreen.dart';
 import 'package:grocery_app/screens/innerscreens/feedsScreen.dart';
 import 'package:grocery_app/screens/innerscreens/onSaleScreen.dart';

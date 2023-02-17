@@ -2,16 +2,18 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:grocery_app/screens/bottom_bar.dart';
 import 'package:grocery_app/services/global_methods.dart';
 import 'package:grocery_app/widget/textWidget.dart';
 
 import '../consts/firebase.dart';
 import '../fetch_screen.dart';
 
+
+
 class GoogleButton extends StatelessWidget {
-   GoogleButton({Key? key}) : super(key: key);
+   const GoogleButton({Key? key}) : super(key: key);
 Future<void> _googleSignIn(context)async {
+
   final googleSignIn = GoogleSignIn();
   final googleAccount = await googleSignIn.signIn();
   if (googleAccount != null) {
@@ -19,20 +21,23 @@ Future<void> _googleSignIn(context)async {
    if(googleAuth.accessToken != null && googleAuth.idToken !=null)
      {
        try{
-       final AuthResult =   await auth.signInWithCredential(GoogleAuthProvider.credential(idToken: googleAuth.idToken,
+       final authResult =   await auth.signInWithCredential(GoogleAuthProvider.credential(idToken: googleAuth.idToken,
          accessToken: googleAuth.accessToken));
-         if(AuthResult.additionalUserInfo!.isNewUser){
-           await FirebaseFirestore.instance.collection('users').doc(AuthResult.user!.uid).set({
-             'id':AuthResult.user!.uid,
-             'name':AuthResult.user!.displayName,
-             'email':AuthResult.user!.email,
+         if(authResult.additionalUserInfo!.isNewUser){
+          await FirebaseFirestore.instance.collection('users').doc(authResult.user!.uid).set({
+             'id':authResult.user!.uid,
+             'name':authResult.user!.displayName,
+             'email':authResult.user!.email,
              'shipping_address': '',
+             'phone':'',
              'userWish': [],
              'userCart':[],
+             'userOrder':[],
              'createAt':Timestamp.now(),
-
-
            });
+
+
+
          }
          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>const FetchScreen(),));
 
@@ -52,6 +57,8 @@ Future<void> _googleSignIn(context)async {
      }
   }
 }
+
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -78,3 +85,4 @@ Future<void> _googleSignIn(context)async {
     );
   }
 }
+

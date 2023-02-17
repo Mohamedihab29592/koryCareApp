@@ -18,7 +18,6 @@ class WishListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Color color = Utils(context).color;
-    Size size = Utils(context).screenSize;
 
     final wishlist = Provider.of<WishlistProvider>(context);
     final wishlistItems = wishlist.getWishlistItem.values.toList().reversed.toList();

@@ -2,7 +2,6 @@ import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:grocery_app/models/orderModel.dart';
 import 'package:grocery_app/provider/products_provider.dart';
-import 'package:grocery_app/services/global_methods.dart';
 import 'package:grocery_app/widget/textWidget.dart';
 import 'package:provider/provider.dart';
 
@@ -28,17 +27,18 @@ orderDateShow = '${orderDate.day}/${orderDate.month}/${orderDate.year}';
   }
   @override
   Widget build(BuildContext context) {
-    final orderModel = Provider.of<OrderModel>(context);
     final Color color = Utils(context).color;
     final Size size = Utils(context).screenSize;
-    final productProvider =Provider.of<ProductsProvider>(context);
-    final getCurrentProduct = productProvider.findById(orderModel.productId);
+    final orderModel = Provider.of<OrderModel>(context);
+
+    final productProvider = Provider.of<ProductsProvider>(context);
+    final getOrderData =productProvider.findById(orderModel.productId);
 
     return ListTile(
-      subtitle:  Text('paid: \$${double.parse(orderModel.price).toStringAsFixed(2)}'),
+      subtitle:  Text('Total: \$${orderModel.total}'),
       onTap: ()
       {
-        Navigator.pushNamed(context, ProductDetails.routeName,arguments: getCurrentProduct.id);
+        Navigator.pushNamed(context, ProductDetails.routeName,arguments: getOrderData.id);
       },
       leading: Container(clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(12),
@@ -51,9 +51,11 @@ orderDateShow = '${orderDate.day}/${orderDate.month}/${orderDate.year}';
 
 
 
-      ),
-      title: TextWidget(title: "${getCurrentProduct.title} x${orderModel.quantity}",color: color,textSize: 18,),
-      trailing: TextWidget(title: orderDateShow,color: color,textSize: 18,),
-    );
+          ),
+          title: TextWidget(title: "${getOrderData.title} x${orderModel.quantity}",color: color,textSize: 18,),
+          trailing: TextWidget(title: orderDateShow,color: color,textSize: 18,),
+        );
+      }
+
   }
-}
+

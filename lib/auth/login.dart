@@ -1,11 +1,9 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:grocery_app/auth/forget_pass.dart';
 import 'package:grocery_app/auth/register.dart';
-import 'package:grocery_app/screens/bottom_bar.dart';
 import 'package:grocery_app/services/global_methods.dart';
 
 import '../consts/contss.dart';

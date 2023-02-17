@@ -8,7 +8,7 @@ import 'package:grocery_app/services/global_methods.dart';
 import 'package:uuid/uuid.dart';
 
 class CartProvider with ChangeNotifier {
-  Map<String, CartModel> _cartItems = {};
+  final Map<String, CartModel> _cartItems = {};
 
   Map<String, CartModel> get getCartItems {
     return _cartItems;

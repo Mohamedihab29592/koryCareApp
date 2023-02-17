@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:grocery_app/provider/products_provider.dart';
 import 'package:grocery_app/provider/wishlist_provider.dart';
@@ -22,7 +21,7 @@ class HeartBTN extends StatefulWidget {
 
 
 class _HeartBTNState extends State<HeartBTN> {
-  bool isloading = false;
+  bool _isloading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +32,7 @@ class _HeartBTNState extends State<HeartBTN> {
     return GestureDetector(
       onTap: () async{
         setState(() {
-          isloading = true;
+          _isloading = true;
         });
         try {
           final User? user = auth.currentUser;
@@ -52,7 +51,7 @@ class _HeartBTNState extends State<HeartBTN> {
           }
           await wishlistProvider.fetchWish();
           setState(() {
-            isloading = false;
+            _isloading = false;
 
           });
 
@@ -61,14 +60,14 @@ class _HeartBTNState extends State<HeartBTN> {
 
         }finally{
           setState(() {
-            isloading = false;
+            _isloading = false;
 
           });
 
 
         }
       },
-      child:isloading ? const Loading():
+      child:_isloading ? const Loading():
       Icon(
         widget.isWishlist? IconlyBold.heart:
         IconlyLight.heart,

@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:grocery_app/auth/login.dart';
 import 'package:grocery_app/consts/firebase.dart';
 import 'package:grocery_app/screens/viewed_recently/viewed_recently.dart';
@@ -12,6 +14,7 @@ import 'package:provider/provider.dart';
 import '../auth/forget_pass.dart';
 import '../provider/cart_provider.dart';
 import '../provider/dark_theme_provider.dart';
+import '../provider/orderProvider.dart';
 import '../provider/products_provider.dart';
 import '../provider/wishlist_provider.dart';
 import '../widget/loading_manager.dart';
@@ -27,6 +30,8 @@ class UserScreen extends StatefulWidget {
 
 class _UserScreenState extends State<UserScreen> {
   final TextEditingController _textEditingController = TextEditingController();
+  final TextEditingController _phoneEditingController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
 
 
@@ -35,6 +40,7 @@ class _UserScreenState extends State<UserScreen> {
   String ? _email ;
   String ? _name ;
   String ? _address ;
+  String ?_phone;
   final User? user = auth.currentUser;
 
 
@@ -53,11 +59,12 @@ class _UserScreenState extends State<UserScreen> {
       return;
     }
     try {
-      String _uid = user!.uid;
-      final DocumentSnapshot userData = await FirebaseFirestore.instance.collection("users").doc(_uid).get();
+      String uid = user!.uid;
+      final DocumentSnapshot userData = await FirebaseFirestore.instance.collection("users").doc(uid).get();
       _email =userData.get('email');
       _name =userData.get('name');
       _address =userData.get('shipping_address');
+      _phone = userData.get('phone');
       _textEditingController.text = userData.get("shipping_address");
     }catch (error){
       _isLoading = false;
@@ -87,6 +94,8 @@ class _UserScreenState extends State<UserScreen> {
     Provider.of<CartProvider>(context, listen: false);
     final wishProvider =
     Provider.of<WishlistProvider>(context, listen: false);
+    final orderProvider =
+    Provider.of<OrderProvider>(context, listen: false);
 
     return Scaffold(
         body: LoadingManager(
@@ -95,116 +104,166 @@ class _UserScreenState extends State<UserScreen> {
       child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                RichText(
-                  text: TextSpan(
-                      text: "HI, ",
-                      style: const TextStyle(
-                          color: Colors.cyan,
-                          fontSize: 27,
-                          fontWeight: FontWeight.bold),
-                      children: <TextSpan>[
-                        TextSpan(
-                          text:_name==null?'user':_name!,
-                          style: TextStyle(
-                              fontSize: 25,
-                              color: color,
-                              fontWeight: FontWeight.w600),
-                        ),
-                      ]),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                TextWidget(title: _email==null?'user':_email! , color: color, textSize: 18),
-                const SizedBox(
-                  height: 20,
-                ),
-                const Divider(
-                  thickness: 2,
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                _listTitle(
-                    title: "Address",
-                    subtitle: _address==null?'address':_address!,
-                    icon: IconlyLight.profile,
-                    onPressed: () async {
-                      await _showAddressDialog();
-                    },
-                    color: color),
-                _listTitle(
-                    title: "Orders",
-                    icon: IconlyLight.bag,
-                    onPressed: () {
-                      GlobalMethods.navigateTo(ctx: context, routeName: OrderScreen.routeName);
-                    },
-                    color: color),
-                _listTitle(
-                    title: "Wishlist",
-                    icon: IconlyLight.heart,
-                    onPressed: () {
-                      GlobalMethods.navigateTo(ctx: context, routeName: WishListScreen.routeName);
-                    },
-                    color: color),
-                _listTitle(
-                    title: "Viewed",
-                    icon: IconlyLight.show,
-                    onPressed: () {
-                      GlobalMethods.navigateTo(ctx: context, routeName: ViewedRecentlyScreen.routeName);
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  RichText(
+                    text: TextSpan(
+                        text: "HI, ",
+                        style: const TextStyle(
+                            color: Colors.cyan,
+                            fontSize: 27,
+                            fontWeight: FontWeight.bold),
+                        children: <TextSpan>[
+                          TextSpan(
+                            text:_name==null?'user':_name!,
+                            style: TextStyle(
+                                fontSize: 25,
+                                color: color,
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ]),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  TextWidget(title: _email==null?'user':_email! , color: color, textSize: 18),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  const Divider(
+                    thickness: 2,
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  _listTitle(
+                      title: "Address",
+                      subtitle: _address==null?'address':_address!,
+                      icon: IconlyLight.profile,
+                      onPressed: () async {
+                        String uid = user!.uid;
+                        await _showAddressDialog(
+                          max: 3,
+                            vaild: FilteringTextInputFormatter.allow(
+                              RegExp('[0-9-a-z-A-Z- ]'),
+                            ),
 
-                    },
-                    color: color),
-                _listTitle(
-                    title: "Forget password",
-                    icon: IconlyLight.unlock,
-                    onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(builder: (context)=>const ForgetPasswordScreen()));
 
-                    },
-                    color: color),
-                SwitchListTile(
-                  title: TextWidget(
-                      title: themeState.getDarkTheme ? "Dark Mode" : "Light Mode",
-                      color: color,
-                      textSize: 20),
-                  secondary: Icon(themeState.getDarkTheme
-                      ? Icons.dark_mode_outlined
-                      : Icons.light_mode_outlined),
-                  onChanged: (bool value) {
-                    setState(() {
-                      themeState.setDarkTheme = value;
-                    });
-                  },
-                  value: themeState.getDarkTheme,
-                ),
-                _listTitle(
-                    title: user == null ? 'Login': "Logout",
-                    icon:user == null ? IconlyLight.login: IconlyLight.logout,
-                    onPressed: () async {
-                      if(user == null)
-                        {
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context)=>const LoginScreen()
-                          )
-                          );
-                          return ;
-                        }
-                      await GlobalMethods.warningDialog(title: 'SignOut', subTitle: "Do you Want to SignOut?", fct: ()async{
-                        await productsProvider.fetchProducts();
-                        await cartProvider.clear();
-                        await   wishProvider.clear();
-                       await auth.signOut();
+                            textEditingController: _textEditingController,title: 'Your Address', fun:(){
+                           FirebaseFirestore.instance.collection("users").doc(uid).update({'shipping_address':_textEditingController.text,});
+                           _textEditingController.clear();
 
-                       Navigator.of(context).push(MaterialPageRoute(builder: (context)=>const LoginScreen()));
+                        }  );
+                      },
+                      color: color),
+                  _listTitle(
+                      title: "phone",
+                      subtitle: _phone==null?'':_phone!,
+                      icon: IconlyLight.call,
+                      onPressed: () async {
+                        String uid = user!.uid;
 
-                      }, context: context);
+                        await _showAddressDialog(
+                          max: 1,
+                          vaild: FilteringTextInputFormatter.allow(
+                            RegExp('[0-9]'),
+                          ),
+
+
+                            textEditingController: _phoneEditingController,title: 'Your Phone', fun: (){
+                          if (_phoneEditingController.text.length ==11  ) {
+                            FirebaseFirestore.instance.collection("users").doc(uid).update({'phone':_phoneEditingController.text,});
+
+                          } else {
+                             Fluttertoast.showToast(
+                              msg: "Enter A valid Mobile number ",
+                              toastLength: Toast.LENGTH_LONG,
+                              gravity: ToastGravity.TOP,
+                               backgroundColor: Colors.red,
+                               fontSize: 20
+                            );
+                             _phoneEditingController.clear();
+
+
+                          }
+
+                        });
+                      },
+                      color: color),
+                  _listTitle(
+                      title: "Orders",
+                      icon: IconlyLight.bag,
+                      onPressed: () {
+                        GlobalMethods.navigateTo(ctx: context, routeName: OrderScreen.routeName);
+                      },
+                      color: color),
+                  _listTitle(
+                      title: "Wishlist",
+                      icon: IconlyLight.heart,
+                      onPressed: () {
+                        GlobalMethods.navigateTo(ctx: context, routeName: WishListScreen.routeName);
+                      },
+                      color: color),
+                  _listTitle(
+                      title: "Viewed",
+                      icon: IconlyLight.show,
+                      onPressed: () {
+                        GlobalMethods.navigateTo(ctx: context, routeName: ViewedRecentlyScreen.routeName);
+
+                      },
+                      color: color),
+                  _listTitle(
+                      title: "Forget password",
+                      icon: IconlyLight.unlock,
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context)=>const ForgetPasswordScreen()));
+
+                      },
+                      color: color),
+                  SwitchListTile(
+                    title: TextWidget(
+                        title: themeState.getDarkTheme ? "Dark Mode" : "Light Mode",
+                        color: color,
+                        textSize: 20),
+                    secondary: Icon(themeState.getDarkTheme
+                        ? Icons.dark_mode_outlined
+                        : Icons.light_mode_outlined),
+                    onChanged: (bool value) {
+                      setState(() {
+                        themeState.setDarkTheme = value;
+                      });
                     },
-                    color: color),
-              ],
+                    value: themeState.getDarkTheme,
+                  ),
+                  _listTitle(
+                      title: user == null ? 'Login': "Logout",
+                      icon:user == null ? IconlyLight.login: IconlyLight.logout,
+                      onPressed: () async {
+                        if(user == null)
+                          {
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context)=>const LoginScreen()
+                            )
+                            );
+                            return ;
+                          }
+                        await GlobalMethods.warningDialog(title: 'SignOut', subTitle: "Do you Want to SignOut?", fct: ()async{
+                          await productsProvider.fetchProducts();
+                          await cartProvider.clear();
+                          await   wishProvider.clear();
+                          await orderProvider.clear();
+                         await auth.signOut();
+
+                         Navigator.of(context).push(MaterialPageRoute(builder: (context)=>const LoginScreen()));
+
+                        }, context: context);
+                      },
+                      color: color),
+                ],
+              ),
             ),
           ),
       ),
@@ -213,28 +272,31 @@ class _UserScreenState extends State<UserScreen> {
   }
 
 
-  Future<void> _showAddressDialog() async {
+  Future<void> _showAddressDialog({required int max, required String  title,required Function fun,required TextEditingController textEditingController,required FilteringTextInputFormatter vaild}) async {
     await showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
               title: const Text('Update'),
               content: TextField(
-                // onChanged: (value){
-                //   print("hi");
-                // },
-                controller: _textEditingController,
-                maxLines: 5,
-                decoration: const InputDecoration(hintText: "Your Address"),
+                inputFormatters: [
+                  vaild,
+                ],
+                controller: textEditingController,
+                maxLines: max,
+                decoration:  InputDecoration(hintText: title),
               ),
               actions: [
                 TextButton(
                   onPressed: () async{
-                    String _uid = user!.uid;
 
 
-                    try{
-                      await FirebaseFirestore.instance.collection("users").doc(_uid).update({'shipping_address':_textEditingController.text,});
+
+                    try {
+                      fun();
+                     await getUserData() ;
+                      Navigator.pop(context);
+
 
                     } catch(error)
                     {
@@ -275,3 +337,4 @@ class _UserScreenState extends State<UserScreen> {
 
 
 }
+

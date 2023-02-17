@@ -24,7 +24,7 @@ final String text;
                   width: double.infinity,
                 ),
               ),
-              SizedBox(height: 100,),
+              const SizedBox(height: 100,),
               Text(
                 text,
                 textAlign: TextAlign.center,

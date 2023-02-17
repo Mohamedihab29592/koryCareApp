@@ -1,5 +1,4 @@
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:grocery_app/models/wishListModel.dart';
 import 'package:grocery_app/provider/products_provider.dart';
@@ -10,7 +9,6 @@ import 'package:iconly/iconly.dart';
 import 'package:provider/provider.dart';
 
 import '../../provider/wishlist_provider.dart';
-import '../../services/global_methods.dart';
 import '../innerscreens/productDetails.dart';
 
 class WishlistWidget extends StatelessWidget {

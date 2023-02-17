@@ -46,6 +46,7 @@ class ProductsProvider with ChangeNotifier {
               ),
               salePrice: element.get('sale_price'),
               isOnSale: element.get('isOnSale'),
+              items:element.get('items')
             ));
       }
     });
@@ -53,14 +54,14 @@ class ProductsProvider with ChangeNotifier {
   }
 
   List<ProductModel> searchQuery(String searchText) {
-    List<ProductModel> _searchList = _productsList
+    List<ProductModel> searchList = _productsList
         .where(
           (element) => element.title.toLowerCase().contains(
         searchText.toLowerCase(),
       ),
     )
         .toList();
-    return _searchList;
+    return searchList;
   }
 
 }

@@ -1,18 +1,22 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:grocery_app/models/cartModel.dart';
-import 'package:grocery_app/models/products_model.dart';
+
 import 'package:grocery_app/provider/cart_provider.dart';
 import 'package:grocery_app/provider/products_provider.dart';
 import 'package:grocery_app/widget/heart_btn.dart';
 import 'package:provider/provider.dart';
 
+import '../../consts/firebase.dart';
 import '../../provider/orderProvider.dart';
 import '../../provider/wishlist_provider.dart';
 import '../../services/global_methods.dart';
 import '../../services/utilies.dart';
+import '../../widget/load.dart';
 import '../../widget/textWidget.dart';
 import '../innerscreens/productDetails.dart';
 
@@ -27,10 +31,23 @@ class CartWidget extends StatefulWidget {
 
 class _CartWidgetState extends State<CartWidget> {
   final TextEditingController _quanController = TextEditingController();
+  bool _isloading = false;
+  String ? _address ;
+  String ?_phone;
+  final User? user = auth.currentUser;
+void getUserData()
+async{
+  String uid = user!.uid;
+  final DocumentSnapshot userData = await FirebaseFirestore.instance.collection("users").doc(uid).get();
+  _address =userData.get('shipping_address');
+  _phone = userData.get('phone');
+}
 
   @override
   void initState() {
+  getUserData();
     _quanController.text = widget.q.toString();
+
     super.initState();
   }
 
@@ -49,7 +66,10 @@ class _CartWidgetState extends State<CartWidget> {
     final getCurrentProduct = productProvider.findById(cartModel.productId);
     final cartProvider = Provider.of<CartProvider>(context);
     double usedPrice = getCurrentProduct.isOnSale? getCurrentProduct.salePrice :getCurrentProduct.price ;
-    final orderProvier = Provider.of<OrderProvider>(context);
+    final orderProvider = Provider.of<OrderProvider>(context);
+    bool inOrder = orderProvider.getOrderItems.containsKey(getCurrentProduct.id);
+
+
 
     double totalPrice = usedPrice * int.parse(_quanController.text);
     final wishlist = Provider.of<WishlistProvider>(context);
@@ -187,13 +207,41 @@ class _CartWidgetState extends State<CartWidget> {
                           borderRadius: BorderRadius.circular(10),
                           child: InkWell(
                             borderRadius: BorderRadius.circular(10),
-                            onTap: () async{
-                              await orderProvier.addProductToOrder(total: totalPrice, cartProvider: cartProvider, productProvider: productProvider, context: context, quantity:cartModel.quantity , productId:cartModel.productId);
+                            onTap: inOrder ? null : () async{
+                              setState(() {
+                                _isloading = true;
+                              });
+                              try{
+
+                                if (_phone == null || _phone ==''){
+                                  GlobalMethods.errorDialog(subTitle: "Please add your phone Number in your profile screen first", context: context);
+                                  return;
+
+                                }
+
+                                else{
+                                  await orderProvider.addProductToOrder(isOnSale:getCurrentProduct.isOnSale,total: totalPrice, cartProvider: cartProvider, productProvider: productProvider, context: context, quantity:cartModel.quantity , productId:cartModel.productId, phone: _phone!, shipping: _address!, title: getCurrentProduct.title,items:getCurrentProduct.items, salePrice: getCurrentProduct.salePrice, price: getCurrentProduct.price, imageUrl:getCurrentProduct.imageUrl);
+                                  await orderProvider.fetchOrders();
+                                  setState(() {
+                                    _isloading = false;
+
+                                  });
+                                }
+
+                              }catch(error)
+                              {
+                                GlobalMethods.errorDialog(subTitle: error.toString(), context: context);
+
+                              }finally{
+                                setState(() {
+                                  _isloading = false;
+                                });
+                              }
                             },
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: TextWidget(
-                                title: 'Order Now',
+                              child: _isloading ? const Loading():TextWidget(
+                                title: inOrder ? 'Ordered':'Order Now',
                                 color: Colors.white,
                                 textSize: 14,
                               ),

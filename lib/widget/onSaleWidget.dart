@@ -1,7 +1,6 @@
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:grocery_app/models/cartModel.dart';
 import 'package:grocery_app/provider/cart_provider.dart';
 import 'package:grocery_app/services/utilies.dart';
 import 'package:grocery_app/widget/priceWidget.dart';

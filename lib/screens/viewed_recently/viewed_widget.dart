@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:grocery_app/models/viewed_model.dart';
@@ -33,7 +32,7 @@ class _ViewedRecentlyWidgetState extends State<ViewedRecentlyWidget> {
         ? getCurrProduct.salePrice
         : getCurrProduct.price;
     final cartProvider = Provider.of<CartProvider>(context);
-    bool? _isInCart = cartProvider.getCartItems.containsKey(getCurrProduct.id);
+    bool? isInCart = cartProvider.getCartItems.containsKey(getCurrProduct.id);
     Color color = Utils(context).color;
     Size size = Utils(context).screenSize;
     return Padding(
@@ -83,7 +82,7 @@ class _ViewedRecentlyWidgetState extends State<ViewedRecentlyWidget> {
                 color: Colors.green,
                 child: InkWell(
                     borderRadius: BorderRadius.circular(12),
-                    onTap: _isInCart
+                    onTap: isInCart
                         ? null
                         : () {
                             cartProvider.addProductToCart(
@@ -96,7 +95,7 @@ class _ViewedRecentlyWidgetState extends State<ViewedRecentlyWidget> {
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Icon(
-                        _isInCart ? Icons.check : IconlyBold.plus,
+                        isInCart ? Icons.check : IconlyBold.plus,
                         color: Colors.white,
                         size: 20,
                       ),

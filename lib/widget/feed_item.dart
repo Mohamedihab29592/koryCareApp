@@ -1,7 +1,6 @@
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:grocery_app/provider/cart_provider.dart';
 import 'package:grocery_app/provider/wishlist_provider.dart';
 import 'package:grocery_app/services/global_methods.dart';
@@ -12,7 +11,6 @@ import 'package:provider/provider.dart';
 
 import '../consts/firebase.dart';
 import '../models/products_model.dart';
-import '../provider/products_provider.dart';
 import '../screens/innerscreens/productDetails.dart';
 import '../services/utilies.dart';
 import 'heart_btn.dart';
@@ -50,8 +48,7 @@ class _FeedsWidgetState extends State<FeedsWidget> {
     final wishlist = Provider.of<WishlistProvider>(context);
     bool ? isWishlist = wishlist.getWishlistItem.containsKey(productModel.id);
     bool ? isInCart  =  cartProvider.getCartItems.containsKey(productModel.id);
-    final productProvider =Provider.of<ProductsProvider>(context);
-    final getCurrentProduct =productProvider.findById(productModel.id);
+
 
     Size size = Utils(context).screenSize;
     Color color = Utils(context).color;

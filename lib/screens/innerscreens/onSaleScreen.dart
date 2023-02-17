@@ -7,7 +7,6 @@ import 'package:provider/provider.dart';
 import '../../models/products_model.dart';
 import '../../provider/products_provider.dart';
 import '../../services/utilies.dart';
-import '../../widget/emptyScreen.dart';
 import '../../widget/empty_products_widget.dart';
 
 

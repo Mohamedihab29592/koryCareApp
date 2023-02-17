@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:grocery_app/consts/firebase.dart';
 import 'package:grocery_app/provider/cart_provider.dart';
+import 'package:grocery_app/provider/orderProvider.dart';
 import 'package:grocery_app/provider/products_provider.dart';
 import 'package:grocery_app/provider/wishlist_provider.dart';
 import 'package:grocery_app/screens/bottom_bar.dart';
 import 'package:provider/provider.dart';
 
-import 'auth/login.dart';
 import 'consts/contss.dart';
 
 
@@ -34,11 +34,13 @@ class _FetchScreenState extends State<FetchScreen> {
       Provider.of<CartProvider>(context, listen: false);
       final wishProvider =
       Provider.of<WishlistProvider>(context, listen: false);
+      final orderProvider = Provider.of<OrderProvider>(context, listen: false);
       if(user == null )
         {
           await productsProvider.fetchProducts();
            await cartProvider.clear();
          await   wishProvider.clear();
+         await   orderProvider.clear();
 
 
         }
@@ -47,6 +49,7 @@ class _FetchScreenState extends State<FetchScreen> {
           await productsProvider.fetchProducts();
           await cartProvider.fetchCart();
           await wishProvider.fetchWish();
+          await orderProvider.fetchOrders();
 
         }
 
