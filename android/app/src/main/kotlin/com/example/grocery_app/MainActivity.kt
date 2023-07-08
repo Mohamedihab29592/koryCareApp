@@ -1,6 +1,8 @@
-package com.example.grocery_app
+package com.example.KoryCare
+
 
 import io.flutter.embedding.android.FlutterActivity
+import io.flutter.embedding.android.FlutterFragmentActivity
 
-class MainActivity: FlutterActivity() {
+class MainActivity: FlutterFragmentActivity() {
 }

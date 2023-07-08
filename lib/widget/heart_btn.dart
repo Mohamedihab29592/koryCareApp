@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:grocery_app/provider/products_provider.dart';
-import 'package:grocery_app/provider/wishlist_provider.dart';
-import 'package:grocery_app/services/global_methods.dart';
-import 'package:grocery_app/services/utilies.dart';
+import 'package:KoryCare/provider/products_provider.dart';
+import 'package:KoryCare/provider/wishlist_provider.dart';
+import 'package:KoryCare/services/global_methods.dart';
+import 'package:KoryCare/services/utilies.dart';
 import 'package:iconly/iconly.dart';
 import 'package:provider/provider.dart';
 

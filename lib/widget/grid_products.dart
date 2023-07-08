@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:grocery_app/widget/products_widget.dart';
+import 'package:KoryCare/widget/products_widget.dart';
 
 import '../consts/constants.dart';
 

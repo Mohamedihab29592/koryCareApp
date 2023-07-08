@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:grocery_app/services/utilies.dart';
-import 'package:grocery_app/widget/textWidget.dart';
 
+
+import '../services/utilies.dart';
 import '../widget/categories_widget.dart';
+import '../widget/textWidget.dart';
 
 class CategoriesScreen extends StatelessWidget {
    CategoriesScreen({Key? key}) : super(key: key);

@@ -3,18 +3,19 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:grocery_app/provider/cart_provider.dart';
-import 'package:grocery_app/provider/viewed_prod_provider.dart';
-import 'package:grocery_app/widget/heart_btn.dart';
-import 'package:grocery_app/widget/textWidget.dart';
+
 import 'package:iconly/iconly.dart';
 import 'package:provider/provider.dart';
 
 import '../../consts/firebase.dart';
+import '../../provider/cart_provider.dart';
 import '../../provider/products_provider.dart';
+import '../../provider/viewed_prod_provider.dart';
 import '../../provider/wishlist_provider.dart';
 import '../../services/global_methods.dart';
 import '../../services/utilies.dart';
+import '../../widget/heart_btn.dart';
+import '../../widget/textWidget.dart';
 
 class ProductDetails extends StatefulWidget {
   static const routeName = '/productDetails';

@@ -1,11 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:grocery_app/consts/firebase.dart';
-import 'package:grocery_app/models/cartModel.dart';
-import 'package:grocery_app/services/global_methods.dart';
+import 'package:flutter/material.dart';
+
+import 'package:toast/toast.dart';
 import 'package:uuid/uuid.dart';
+
+import '../consts/firebase.dart';
+import '../models/cartModel.dart';
+import '../services/global_methods.dart';
 
 class CartProvider with ChangeNotifier {
   final Map<String, CartModel> _cartItems = {};
@@ -31,10 +33,12 @@ class CartProvider with ChangeNotifier {
           }
         ])
       });
-      await Fluttertoast.showToast(
-        msg: "Item has been added to your cart",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
+      Toast.show(
+        "Item has been added to your Cart",
+        duration: Toast.lengthLong,
+        gravity: Toast.bottom,
+        backgroundColor: Colors.grey.shade600,
+
       );
     } catch (error) {
       GlobalMethods.errorDialog(subTitle: error.toString(), context: context);

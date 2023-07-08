@@ -1,18 +1,20 @@
+import 'package:KoryCare/auth/register.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:grocery_app/auth/forget_pass.dart';
-import 'package:grocery_app/auth/register.dart';
-import 'package:grocery_app/services/global_methods.dart';
+
 
 import '../consts/contss.dart';
 import '../consts/firebase.dart';
 import '../fetch_screen.dart';
+import '../screens/bottom_bar.dart';
+import '../services/global_methods.dart';
 import '../widget/auth_button.dart';
 import '../widget/google_button.dart';
 import '../widget/loading_manager.dart';
 import '../widget/textWidget.dart';
+import 'forget_pass.dart';
 
 
 
@@ -238,7 +240,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   const SizedBox(
                     height: 10,
                   ),
-                   GoogleButton(),
+                   const GoogleButton(),
                   const SizedBox(
                     height: 10,
                   ),
@@ -274,7 +276,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   AuthButton(
                     fct: () {
-                      Navigator.of(context).push(MaterialPageRoute(builder: (context)=>const FetchScreen()));
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context)=>const BottomBarScreen()));
 
                     },
                     buttonText: 'Continue as a guest',

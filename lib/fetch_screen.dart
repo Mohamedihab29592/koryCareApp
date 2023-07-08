@@ -1,15 +1,17 @@
+import 'package:KoryCare/provider/cart_provider.dart';
+import 'package:KoryCare/provider/orderProvider.dart';
+import 'package:KoryCare/provider/products_provider.dart';
+import 'package:KoryCare/provider/wishlist_provider.dart';
+import 'package:KoryCare/screens/bottom_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:grocery_app/consts/firebase.dart';
-import 'package:grocery_app/provider/cart_provider.dart';
-import 'package:grocery_app/provider/orderProvider.dart';
-import 'package:grocery_app/provider/products_provider.dart';
-import 'package:grocery_app/provider/wishlist_provider.dart';
-import 'package:grocery_app/screens/bottom_bar.dart';
+
 import 'package:provider/provider.dart';
 
+import 'auth/login.dart';
 import 'consts/contss.dart';
+import 'consts/firebase.dart';
 
 
 class FetchScreen extends StatefulWidget {
@@ -41,7 +43,8 @@ class _FetchScreenState extends State<FetchScreen> {
            await cartProvider.clear();
          await   wishProvider.clear();
          await   orderProvider.clear();
-
+          Navigator.of(context).pushReplacement(MaterialPageRoute(
+              builder: (ctx) => const LoginScreen(),));
 
         }
       else
@@ -50,13 +53,14 @@ class _FetchScreenState extends State<FetchScreen> {
           await cartProvider.fetchCart();
           await wishProvider.fetchWish();
           await orderProvider.fetchOrders();
+          Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (ctx) => const BottomBarScreen(),
+          ));
 
         }
 
 
-      Navigator.of(context).pushReplacement(MaterialPageRoute(
-        builder: (ctx) => const BottomBarScreen(),
-      ));
+
     });
     super.initState();
   }

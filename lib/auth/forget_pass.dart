@@ -1,12 +1,13 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:grocery_app/consts/firebase.dart';
-import 'package:grocery_app/services/global_methods.dart';
+
+import 'package:toast/toast.dart';
 
 
 import '../../consts/contss.dart';
+import '../consts/firebase.dart';
+import '../services/global_methods.dart';
 import '../services/utilies.dart';
 import '../widget/auth_button.dart';
 import '../widget/backWidget.dart';
@@ -42,14 +43,12 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
       });
       try {
         await auth.sendPasswordResetEmail(email: _emailTextController.text.toLowerCase());
-         Fluttertoast.showToast(
-             msg: "Check your Email for Reset Link",
-             toastLength: Toast.LENGTH_LONG,
-             gravity: ToastGravity.CENTER,
-             timeInSecForIosWeb: 1,
+         Toast.show(
+             "Check your Email for Reset Link",
+             duration: Toast.lengthLong,
+             gravity: Toast.bottom,
              backgroundColor: Colors.grey.shade600,
-             textColor: Colors.white,
-             fontSize: 16.0
+
          );
 
       }on FirebaseException catch (error)

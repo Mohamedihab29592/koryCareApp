@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:grocery_app/provider/cart_provider.dart';
-import 'package:grocery_app/provider/products_provider.dart';
-import 'package:grocery_app/screens/cart/cartWidget.dart';
-import 'package:grocery_app/widget/emptyScreen.dart';
-import 'package:grocery_app/services/global_methods.dart';
-import 'package:grocery_app/services/utilies.dart';
-import 'package:grocery_app/widget/textWidget.dart';
+
 import 'package:iconly/iconly.dart';
 import 'package:provider/provider.dart';
+
+import '../../provider/cart_provider.dart';
+import '../../provider/products_provider.dart';
+import '../../services/global_methods.dart';
+import '../../services/utilies.dart';
+import '../../widget/emptyScreen.dart';
+import '../../widget/textWidget.dart';
+import 'cartWidget.dart';
 
 
 class CartScreen extends StatelessWidget {

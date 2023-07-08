@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:grocery_app/services/global_methods.dart';
-import 'package:grocery_app/widget/backWidget.dart';
-import 'package:grocery_app/widget/textWidget.dart';
+import 'package:KoryCare/services/global_methods.dart';
+import 'package:KoryCare/widget/backWidget.dart';
+import 'package:KoryCare/widget/textWidget.dart';
 
 import '../screens/innerscreens/feedsScreen.dart';
 import '../services/utilies.dart';

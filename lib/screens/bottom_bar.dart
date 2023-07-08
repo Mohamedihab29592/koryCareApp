@@ -1,16 +1,16 @@
-import 'package:badges/badges.dart';
+import 'package:KoryCare/screens/userScreen.dart';
 import 'package:flutter/material.dart';
 
-import 'package:grocery_app/provider/cart_provider.dart';
-import 'package:grocery_app/provider/dark_theme_provider.dart';
-import 'package:grocery_app/screens/cataegories.dart';
-import 'package:grocery_app/screens/home_screen.dart';
-import 'package:grocery_app/screens/userScreen.dart';
-import 'package:grocery_app/widget/textWidget.dart';
+
 import 'package:iconly/iconly.dart';
 import 'package:provider/provider.dart';
 
+import '../provider/cart_provider.dart';
+import '../provider/dark_theme_provider.dart';
+import '../widget/textWidget.dart';
 import 'cart/cart.dart';
+import 'cataegories.dart';
+import 'home_screen.dart';
 
 class BottomBarScreen extends StatefulWidget {
   const BottomBarScreen({Key? key}) : super(key: key);
@@ -70,7 +70,7 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
               icon: Consumer<CartProvider>(
                 builder: (_,myCart,ch) {
                   return Badge(
-             badgeContent: TextWidget(
+             label: TextWidget(
                   title: myCart.getCartItems.length.toString(), color: Colors.white, textSize: 10),
     child: const Icon(IconlyLight.buy),
                   );

@@ -1,14 +1,15 @@
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
-import 'package:grocery_app/models/wishListModel.dart';
-import 'package:grocery_app/provider/products_provider.dart';
-import 'package:grocery_app/services/utilies.dart';
-import 'package:grocery_app/widget/heart_btn.dart';
-import 'package:grocery_app/widget/textWidget.dart';
+
 import 'package:iconly/iconly.dart';
 import 'package:provider/provider.dart';
 
+import '../../models/wishListModel.dart';
+import '../../provider/products_provider.dart';
 import '../../provider/wishlist_provider.dart';
+import '../../services/utilies.dart';
+import '../../widget/heart_btn.dart';
+import '../../widget/textWidget.dart';
 import '../innerscreens/productDetails.dart';
 
 class WishlistWidget extends StatelessWidget {

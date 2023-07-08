@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:grocery_app/widget/backWidget.dart';
-import 'package:grocery_app/widget/textWidget.dart';
+
 import 'package:iconly/iconly.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/products_model.dart';
 import '../../provider/products_provider.dart';
 import '../../services/utilies.dart';
+import '../../widget/backWidget.dart';
 import '../../widget/empty_products_widget.dart';
 import '../../widget/feed_item.dart';
+import '../../widget/textWidget.dart';
 
 
 class FeedsScreen extends StatefulWidget {
@@ -55,22 +56,24 @@ class _FeedsScreenState extends State<FeedsScreen> {
       body: allProducts.isEmpty
           ? Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(
-                    IconlyLight.danger,
-                    size: 200,
-                  ),
-                  Text(
-                    "No Products Yet!!\n Stay tuned ",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: color,
-                        fontSize: 40,
-                        fontWeight: FontWeight.w700),
-                  ),
-                ],
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(
+                      IconlyLight.danger,
+                      size: 200,
+                    ),
+                    Text(
+                      "No Products Yet!!\n Stay tuned ",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: color,
+                          fontSize: 40,
+                          fontWeight: FontWeight.w700),
+                    ),
+                  ],
+                ),
               ))
           : SingleChildScrollView(
               child: Column(

@@ -1,11 +1,11 @@
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:grocery_app/provider/cart_provider.dart';
-import 'package:grocery_app/provider/wishlist_provider.dart';
-import 'package:grocery_app/services/global_methods.dart';
-import 'package:grocery_app/widget/priceWidget.dart';
-import 'package:grocery_app/widget/textWidget.dart';
+import 'package:KoryCare/provider/cart_provider.dart';
+import 'package:KoryCare/provider/wishlist_provider.dart';
+import 'package:KoryCare/services/global_methods.dart';
+import 'package:KoryCare/widget/priceWidget.dart';
+import 'package:KoryCare/widget/textWidget.dart';
 import 'package:iconly/iconly.dart';
 import 'package:provider/provider.dart';
 

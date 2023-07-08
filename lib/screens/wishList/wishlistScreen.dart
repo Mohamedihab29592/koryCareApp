@@ -1,15 +1,16 @@
+import 'package:KoryCare/screens/wishList/wishListWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:grocery_app/screens/wishList/wishListWidget.dart';
-import 'package:grocery_app/services/global_methods.dart';
-import 'package:grocery_app/services/utilies.dart';
-import 'package:grocery_app/widget/backWidget.dart';
-import 'package:grocery_app/widget/emptyScreen.dart';
-import 'package:grocery_app/widget/textWidget.dart';
+
 import 'package:iconly/iconly.dart';
 import 'package:provider/provider.dart';
 
 import '../../provider/wishlist_provider.dart';
+import '../../services/global_methods.dart';
+import '../../services/utilies.dart';
+import '../../widget/backWidget.dart';
+import '../../widget/emptyScreen.dart';
+import '../../widget/textWidget.dart';
 
 class WishListScreen extends StatelessWidget {
   const WishListScreen({Key? key}) : super(key: key);

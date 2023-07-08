@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:grocery_app/models/wishListModel.dart';
+import 'package:flutter/material.dart';
+import 'package:toast/toast.dart';
 import 'package:uuid/uuid.dart';
 
 import '../consts/firebase.dart';
+import '../models/wishListModel.dart';
 import '../services/global_methods.dart';
 
 class WishlistProvider with ChangeNotifier {
@@ -30,10 +30,12 @@ class WishlistProvider with ChangeNotifier {
          }
        ])
      });
-     await Fluttertoast.showToast(
-       msg: "Item has been added to your wishList",
-       toastLength: Toast.LENGTH_SHORT,
-       gravity: ToastGravity.BOTTOM,
+     Toast.show(
+       "Item Has been added to your wishlist",
+       duration: Toast.lengthLong,
+       gravity: Toast.bottom,
+       backgroundColor: Colors.grey.shade600,
+
      );
 
    } catch (error) {

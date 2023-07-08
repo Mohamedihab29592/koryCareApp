@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:grocery_app/widget/textWidget.dart';
+import 'package:KoryCare/widget/textWidget.dart';
 
 import '../services/utilies.dart';
 

@@ -1,11 +1,12 @@
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
-import 'package:grocery_app/models/orderModel.dart';
-import 'package:grocery_app/provider/products_provider.dart';
-import 'package:grocery_app/widget/textWidget.dart';
+
 import 'package:provider/provider.dart';
 
+import '../../models/orderModel.dart';
+import '../../provider/products_provider.dart';
 import '../../services/utilies.dart';
+import '../../widget/textWidget.dart';
 import '../innerscreens/productDetails.dart';
 
 class OrderWidget extends StatefulWidget {

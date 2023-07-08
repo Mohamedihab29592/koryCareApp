@@ -5,7 +5,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:grocery_app/auth/forget_pass.dart';
 import 'package:iconly/iconly.dart';
 
 import '../../consts/contss.dart';
@@ -16,6 +15,7 @@ import '../services/utilies.dart';
 import '../widget/auth_button.dart';
 import '../widget/loading_manager.dart';
 import '../widget/textWidget.dart';
+import 'forget_pass.dart';
 import 'login.dart';
 
 
@@ -67,12 +67,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
       try{
         await  auth.createUserWithEmailAndPassword(email: _emailTextController.text.toLowerCase().trim(), password: _passTextController.text.trim());
        final User? user = auth.currentUser;
-       final _uid = user!.uid;
+       final uid = user!.uid;
        user.updateDisplayName(_fullNameController.text);
 
       await  user.reload();
-       await FirebaseFirestore.instance.collection('users').doc(_uid).set({
-         'id':_uid,
+       await FirebaseFirestore.instance.collection('users').doc(uid).set({
+         'id':uid,
          'name':_fullNameController.text,
          'email':_emailTextController.text.toLowerCase(),
          'phone':_phoneTextController.text,

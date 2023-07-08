@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:grocery_app/widget/backWidget.dart';
-import 'package:grocery_app/widget/onSaleWidget.dart';
-import 'package:grocery_app/widget/textWidget.dart';
+
 import 'package:provider/provider.dart';
 
 import '../../models/products_model.dart';
 import '../../provider/products_provider.dart';
 import '../../services/utilies.dart';
+import '../../widget/backWidget.dart';
 import '../../widget/empty_products_widget.dart';
+import '../../widget/onSaleWidget.dart';
+import '../../widget/textWidget.dart';
 
 
 class OnSale extends StatelessWidget {

@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:grocery_app/models/orderModel.dart';
+import 'package:flutter/material.dart';
+import 'package:toast/toast.dart';
 
 import 'package:uuid/uuid.dart';
 
 import '../consts/firebase.dart';
+import '../models/orderModel.dart';
 import '../services/global_methods.dart';
 
 class OrderProvider with ChangeNotifier {
@@ -71,10 +71,14 @@ class OrderProvider with ChangeNotifier {
         'items':items,
         'isOnSale':isOnSale,
       });
-      await Fluttertoast.showToast(
-        msg: "Your Order has Been Placed",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
+
+      Toast.show(
+
+        "Your Order has been placed",
+        duration: Toast.lengthLong,
+        gravity: Toast.bottom,
+        backgroundColor: Colors.grey.shade600,
+
       );
 
     } catch (error) {

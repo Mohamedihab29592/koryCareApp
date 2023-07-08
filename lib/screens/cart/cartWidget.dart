@@ -4,18 +4,18 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:grocery_app/models/cartModel.dart';
 
-import 'package:grocery_app/provider/cart_provider.dart';
-import 'package:grocery_app/provider/products_provider.dart';
-import 'package:grocery_app/widget/heart_btn.dart';
 import 'package:provider/provider.dart';
 
 import '../../consts/firebase.dart';
+import '../../models/cartModel.dart';
+import '../../provider/cart_provider.dart';
 import '../../provider/orderProvider.dart';
+import '../../provider/products_provider.dart';
 import '../../provider/wishlist_provider.dart';
 import '../../services/global_methods.dart';
 import '../../services/utilies.dart';
+import '../../widget/heart_btn.dart';
 import '../../widget/load.dart';
 import '../../widget/textWidget.dart';
 import '../innerscreens/productDetails.dart';

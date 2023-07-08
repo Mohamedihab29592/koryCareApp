@@ -1,14 +1,15 @@
 
 import 'package:flutter/material.dart';
-import 'package:grocery_app/widget/backWidget.dart';
-import 'package:grocery_app/widget/textWidget.dart';
+
 import 'package:provider/provider.dart';
 
 import '../../models/products_model.dart';
 import '../../provider/products_provider.dart';
 import '../../services/utilies.dart';
+import '../../widget/backWidget.dart';
 import '../../widget/empty_products_widget.dart';
 import '../../widget/feed_item.dart';
+import '../../widget/textWidget.dart';
 
 
 class CategoryScreen extends StatefulWidget {

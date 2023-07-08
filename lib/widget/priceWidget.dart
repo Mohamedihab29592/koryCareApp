@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:grocery_app/services/utilies.dart';
-import 'package:grocery_app/widget/textWidget.dart';
+import 'package:KoryCare/services/utilies.dart';
+import 'package:KoryCare/widget/textWidget.dart';
 
 class PriceWidget extends StatelessWidget {
   const PriceWidget(

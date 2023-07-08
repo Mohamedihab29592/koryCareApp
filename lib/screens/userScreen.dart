@@ -1,22 +1,23 @@
+import 'package:KoryCare/screens/viewed_recently/viewed_recently.dart';
+import 'package:KoryCare/screens/wishList/wishlistScreen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:grocery_app/auth/login.dart';
-import 'package:grocery_app/consts/firebase.dart';
-import 'package:grocery_app/screens/viewed_recently/viewed_recently.dart';
-import 'package:grocery_app/screens/wishList/wishlistScreen.dart';
-import 'package:grocery_app/services/global_methods.dart';
+
 import 'package:iconly/iconly.dart';
 import 'package:provider/provider.dart';
+import 'package:toast/toast.dart';
 
 import '../auth/forget_pass.dart';
+import '../auth/login.dart';
+import '../consts/firebase.dart';
 import '../provider/cart_provider.dart';
 import '../provider/dark_theme_provider.dart';
 import '../provider/orderProvider.dart';
 import '../provider/products_provider.dart';
 import '../provider/wishlist_provider.dart';
+import '../services/global_methods.dart';
 import '../widget/loading_manager.dart';
 import '../widget/textWidget.dart';
 import 'orderScreen/orderScreen.dart';
@@ -179,12 +180,12 @@ class _UserScreenState extends State<UserScreen> {
                             FirebaseFirestore.instance.collection("users").doc(uid).update({'phone':_phoneEditingController.text,});
 
                           } else {
-                             Fluttertoast.showToast(
-                              msg: "Enter A valid Mobile number ",
-                              toastLength: Toast.LENGTH_LONG,
-                              gravity: ToastGravity.TOP,
-                               backgroundColor: Colors.red,
-                               fontSize: 20
+                            Toast.show(
+                              "Enter a valid mobile number",
+                              duration: Toast.lengthLong,
+                              gravity: Toast.bottom,
+                              backgroundColor: Colors.red,
+
                             );
                              _phoneEditingController.clear();
 

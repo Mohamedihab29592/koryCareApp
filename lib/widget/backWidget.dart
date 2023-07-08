@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:grocery_app/services/utilies.dart';
 import 'package:iconly/iconly.dart';
+
+import '../services/utilies.dart';
 
 class BackWidget extends StatelessWidget {
   const BackWidget({Key? key}) : super(key: key);

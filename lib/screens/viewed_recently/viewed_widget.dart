@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
-import 'package:grocery_app/models/viewed_model.dart';
-import 'package:grocery_app/services/global_methods.dart';
+
 import 'package:iconly/iconly.dart';
 import 'package:provider/provider.dart';
 
+import '../../models/viewed_model.dart';
 import '../../provider/cart_provider.dart';
 import '../../provider/products_provider.dart';
+import '../../services/global_methods.dart';
 import '../../services/utilies.dart';
 import '../../widget/textWidget.dart';
 import '../innerscreens/productDetails.dart';

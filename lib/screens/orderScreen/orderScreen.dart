@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:grocery_app/screens/orderScreen/orderWidget.dart';
-import 'package:grocery_app/widget/backWidget.dart';
-import 'package:grocery_app/widget/emptyScreen.dart';
+
 import 'package:provider/provider.dart';
 
 import '../../provider/orderProvider.dart';
 import '../../services/utilies.dart';
+import '../../widget/backWidget.dart';
+import '../../widget/emptyScreen.dart';
 import '../../widget/textWidget.dart';
+import 'orderWidget.dart';
 
 class OrderScreen extends StatefulWidget {
   const OrderScreen({Key? key}) : super(key: key);
