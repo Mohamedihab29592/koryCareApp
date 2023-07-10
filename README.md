@@ -23,5 +23,6 @@ Here are some screeshots for the application:
 --- |---|---
 
 
+## Demo Video
 
-
+https://drive.google.com/file/d/1BouwL5wv9Q4MIe0U9MqbAezSUbyERGs2/view?usp=sharing
