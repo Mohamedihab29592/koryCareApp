@@ -59,8 +59,7 @@ class _FeedsWidgetState extends State<FeedsWidget> {
       child: InkWell(
         onTap: () {
           Navigator.pushNamed(context, ProductDetails.routeName,arguments: productModel.id);
-          // GlobalMethods.navigateTo(
-          //     ctx: context, routeName: ProductDetails.routeName);
+
         },
         borderRadius: BorderRadius.circular(12),
         child: Column(

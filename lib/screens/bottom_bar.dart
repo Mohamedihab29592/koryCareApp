@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 
 import '../provider/cart_provider.dart';
 import '../provider/dark_theme_provider.dart';
+import '../provider/products_provider.dart';
 import '../widget/textWidget.dart';
 import 'cart/cart.dart';
 import 'cataegories.dart';
@@ -20,6 +21,8 @@ class BottomBarScreen extends StatefulWidget {
 }
 
 class _BottomBarScreenState extends State<BottomBarScreen> {
+
+
   int _selectedIndex = 0;
   final List<Map<String, dynamic>> _pages = [
     {

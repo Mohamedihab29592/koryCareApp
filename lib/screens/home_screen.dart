@@ -22,7 +22,16 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
+
 class _HomeScreenState extends State<HomeScreen> {
+
+  @override
+  void initState() {
+    final productsProvider =
+    Provider.of<ProductsProvider>(context, listen: false);
+    productsProvider.fetchProducts();
+    super.initState();
+  }
 
 
   @override
@@ -42,6 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
             SizedBox(
                 height: size.height * 0.35,
                 child: Swiper(
+                  autoplay: true,
                   itemBuilder: (BuildContext context, int index) {
                     return Image.asset(
                       Constss.offerImages[index],

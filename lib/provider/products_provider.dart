@@ -34,6 +34,9 @@ class ProductsProvider with ChangeNotifier {
         .then((QuerySnapshot productSnapshot) {
           _productsList.clear();
       for (var element in productSnapshot.docs) {
+        double? salePrice = element.get('sale_price') is int
+            ? (element.get('sale_price') as int).toDouble() // Convert int to double if necessary
+            : element.get('sale_price') as double?;
         _productsList.insert(
             0,
             ProductModel(
@@ -44,7 +47,7 @@ class ProductsProvider with ChangeNotifier {
               price: double.parse(
                 element.get('price'),
               ),
-              salePrice: element.get('sale_price'),
+              salePrice: salePrice!,
               isOnSale: element.get('isOnSale'),
               items:element.get('items')
             ));

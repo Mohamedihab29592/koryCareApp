@@ -16,7 +16,7 @@ class CategoriesScreen extends StatelessWidget {
     },
     {
       'imagePath' :'https://ae01.alicdn.com/kf/H692217df3b7b4fda94ad97257e696f8ds.jpg',
-      'catText':'Cosmetics Tools ',
+      'catText':'Cosmetics Tools',
 
     },
 
