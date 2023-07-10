@@ -1,7 +1,7 @@
 # koryCare App
 
 A mobile application developed using Flutter and firebase database. It supports Android and IOS and web.
- It allows the users to buy Cosmitics products. we have a dashboard to allow owner to add products or remove it and edit also he can add offers.
+It allows the users to buy Cosmitics products. we have a dashboard to allow owner to add products or remove it and edit also he can add offers.
 
 ## DashBoard
 
